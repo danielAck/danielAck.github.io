@@ -3,9 +3,11 @@
 
 
     
+    
+    
   <url>
     <loc>http://yoursite.com/2018/04/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</loc>
-    <lastmod>2018-04-22T10:18:40.520Z</lastmod>
+    <lastmod>2018-04-22T13:00:45.901Z</lastmod>
     <data>
         <display>
         <title>我的第一篇文章</title>
@@ -22,6 +24,44 @@
     </data>
     </url>
 
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/22/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</loc>
+    <lastmod>2018-04-22T12:58:06.276Z</lastmod>
+    <data>
+        <display>
+        <title>科学上网</title>
+        <pubTime>2018-04-22T12:57:42.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/22/%E5%85%B3%E4%BA%8EHashcode%E4%BB%A5%E5%8F%8A%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</loc>
+    <lastmod>2018-04-22T12:39:06.371Z</lastmod>
+    <data>
+        <display>
+        <title>关于Hashcode以及相关知识</title>
+        <pubTime>2018-04-22T12:21:12.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>HashCode</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java学习" url="http://yoursite.com/categories/Java%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://yoursite.com/2018/04/22/hello-world/</loc>
