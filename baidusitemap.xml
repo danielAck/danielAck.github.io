@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</loc>
+    <lastmod>2018-04-22T10:18:40.520Z</lastmod>
+    <data>
+        <display>
+        <title>我的第一篇文章</title>
+        <pubTime>2018-04-22T06:14:45.000Z</pubTime>
+        
+        <tag>闲聊</tag>
+         
+         
+           
+             
+              <breadCrumb title="其他" url="http://yoursite.com/categories/%E5%85%B6%E4%BB%96/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/22/hello-world/</loc>
+    <lastmod>2018-04-22T03:43:59.828Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2018-04-22T03:43:59.828Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+</urlset>
