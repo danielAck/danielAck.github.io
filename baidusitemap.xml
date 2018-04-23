@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/04/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</loc>
+    <lastmod>2018-04-23T10:13:18.648Z</lastmod>
+    <data>
+        <display>
+        <title>我的第一篇文章</title>
+        <pubTime>2018-04-22T06:14:45.000Z</pubTime>
+        
+        <tag>闲聊</tag>
+         
+         
+           
+             
+              <breadCrumb title="其他" url="http://yoursite.com/categories/%E5%85%B6%E4%BB%96/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/04/22/%E5%85%B3%E4%BA%8EHashcode%E4%BB%A5%E5%8F%8A%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</loc>
     <lastmod>2018-04-22T16:09:35.120Z</lastmod>
     <data>
@@ -26,25 +46,5 @@
 
     
     
-    
-  <url>
-    <loc>http://yoursite.com/2018/04/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</loc>
-    <lastmod>2018-04-22T13:00:45.901Z</lastmod>
-    <data>
-        <display>
-        <title>我的第一篇文章</title>
-        <pubTime>2018-04-22T06:14:45.000Z</pubTime>
-        
-        <tag>闲聊</tag>
-         
-         
-           
-             
-              <breadCrumb title="其他" url="http://yoursite.com/categories/%E5%85%B6%E4%BB%96/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
 </urlset>

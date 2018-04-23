@@ -449,7 +449,7 @@
 </li>
 <li><p>便于实现 <strong>散列存储</strong>。</p>
 <blockquote>
-<p>散列是数组存储方式的一种发展，相比数组，散列的数据访问速度要高于数组，因为可以依据存储数据的部分内容找到数据在数组中的存储位置，进而能够快速实现数据的访问，理想的散列访问速度是非常迅速的，而不像在数组中的遍历过程，采用存储数组中内容的部分元素作为映射函数的输入，映射函数的输出就是存储数据的位置，这样的访问速度就省去了遍历数组的实现，因此时间复杂度可以认为为O(1)，而数组遍历的时间复杂度为O(n)。 —–<a herf="https://baike.baidu.com/item/%E6%95%A3%E5%88%97%E5%AD%98%E5%82%A8%E6%96%B9%E6%B3%95/9663463">[百度百科]</a></p>
+<p>散列是数组存储方式的一种发展，相比数组，散列的数据访问速度要高于数组，因为可以依据存储数据的部分内容找到数据在数组中的存储位置，进而能够快速实现数据的访问，理想的散列访问速度是非常迅速的，而不像在数组中的遍历过程，采用存储数组中内容的部分元素作为映射函数的输入，映射函数的输出就是存储数据的位置，这样的访问速度就省去了遍历数组的实现，因此时间复杂度可以认为为O(1)，而数组遍历的时间复杂度为O(n)。 ——-<a herf="https://baike.baidu.com/item/%E6%95%A3%E5%88%97%E5%AD%98%E5%82%A8%E6%96%B9%E6%B3%95/9663463">[百度百科]</a></p>
 </blockquote>
 </li>
 </ol>
@@ -466,7 +466,7 @@
 </ul>
 <p>　　</p>
 <h3 id="HashCode的生成"><a href="#HashCode的生成" class="headerlink" title="HashCode的生成"></a>HashCode的生成</h3><blockquote>
-<p>哈希码产生的依据：哈希码并不是完全唯一的，它是一种算法，让同一个类的对象按照自己不同的特征尽量的有不同的哈希码，但不表示不同的对象哈希码完全不同。也有相同的情况，看程序员如何写哈希码的算法。—–<a herf="https://baike.baidu.com/item/%E5%93%88%E5%B8%8C%E7%A0%81"> [百度百科]</a></p>
+<p>哈希码产生的依据：哈希码并不是完全唯一的，它是一种算法，让同一个类的对象按照自己不同的特征尽量的有不同的哈希码，但不表示不同的对象哈希码完全不同。也有相同的情况，看程序员如何写哈希码的算法。——-<a herf="https://baike.baidu.com/item/%E5%93%88%E5%B8%8C%E7%A0%81"> [百度百科]</a></p>
 </blockquote>
 <h4 id="同样以HashMap为例"><a href="#同样以HashMap为例" class="headerlink" title="同样以HashMap为例"></a>同样以<strong>HashMap</strong>为例</h4><p><strong>HashMap</strong>类中的 <strong>hash()</strong> 方法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h;</span><br><span class="line">        <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p>在 <strong>Object</strong> 类中<code>hashCode()</code> 是一个native方法，意味着方法的实现和硬件平台有关，默认实现和虚拟机有关，对于有些JVM，<code>hashCode()</code>返回的是对象的地址，大多时候JVM根据一定的规则将与对象相关的信息（比如对象的存储地址，对象的字段等）映射成一个数值，并返回。<br>而在 <strong>HashMap</strong>中，会调用 <strong>Key</strong> 所属类实现的 <code>hashCode()</code>方法获得 hashCode。</p>
@@ -484,7 +484,7 @@
 <p>  在第一次调用hashCode方法时，字符串的哈希值被计算并且赋值给hash字段，之后再调用hashCode方法便可以直接取hash字段返回。<br>  而计String类型计算 hashCode 的方法也比较简单：以31为权重，每一位为字符的ASCII值进行运算，用自然溢出来等效取模。</p>
 <ul>
 <li><strong>题外话</strong>：为什么要选择31作为权重？<blockquote>
-<p>“之所以选择值31是因为它是奇数素数。如果它是偶数，并且乘法溢出，则信息将丢失，因为2的乘法相当于移位。<br>使用素数的优点不太清楚，但它是传统的。31的一个很好的特性是，可以用一个移位和一个减法来代替乘法，以获得更好的性能：31×i =（i &lt; 5）- i。<br>现代VMS自动完成这种优化。”      —–参考<a herf="https://stackoverflow.com/questions/299304/why-does-javas-hashcode-in-string-use-31-as-a-multiplier">Stack Overflow</a></p>
+<p>“之所以选择值31是因为它是奇数素数。如果它是偶数，并且乘法溢出，则信息将丢失，因为2的乘法相当于移位。<br>使用素数的优点不太清楚，但它是传统的。31的一个很好的特性是，可以用一个移位和一个减法来代替乘法，以获得更好的性能：31×i =（i &lt; 5）- i。<br>现代VMS自动完成这种优化。”      ——-参考<a herf="https://stackoverflow.com/questions/299304/why-does-javas-hashcode-in-string-use-31-as-a-multiplier">Stack Overflow</a></p>
 </blockquote>
 </li>
 <li><strong>Integer类型</strong><br>Integer类就比较简单了，返回的哈希码就是Integer对象里所包含的那个整数的数值，例如<code>Integer i1=new Integer(100)</code>  , <code>i1.hashCode</code> 的值就是100 。由此可见，2个一样大小的Integer对象，返回的哈希码也一样。</li>
@@ -1395,6 +1395,8 @@
   
 
   
+  
+
 
   
 
