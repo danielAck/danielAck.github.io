@@ -4,25 +4,8 @@
 
     
   <url>
-    <loc>https://danielack.github.io/2018/05/02/Hadoop-%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
-    <lastmod>2018-05-02T10:17:53.848Z</lastmod>
-    <data>
-        <display>
-        <title>Hadoop 伪分布式环境搭建</title>
-        <pubTime>2018-05-02T05:48:28.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-    
-    
-  <url>
     <loc>https://danielack.github.io/2018/04/23/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E6%95%99%E7%A8%8B/</loc>
-    <lastmod>2018-04-23T13:53:30.802Z</lastmod>
+    <lastmod>2018-05-02T11:53:26.046Z</lastmod>
     <data>
         <display>
         <title>科学上网教程</title>
@@ -39,6 +22,23 @@
     </data>
     </url>
 
+    
+  <url>
+    <loc>https://danielack.github.io/2018/05/02/Hadoop-%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2018-05-02T10:17:53.848Z</lastmod>
+    <data>
+        <display>
+        <title>Hadoop 伪分布式环境搭建</title>
+        <pubTime>2018-05-02T05:48:28.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
     
   <url>
     <loc>https://danielack.github.io/2018/04/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</loc>
