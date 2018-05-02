@@ -127,7 +127,7 @@
 <meta property="og:site_name" content="Daniel_Codezone">
 <meta property="og:description" content="Hadoop伪分布式安装步骤JDK 安装（1.8版本及以上） 貌似如果JDK是1.7的话会遇到一些莫名的BUG…比如编译Spark的时候就卡了很久！！  解压：    tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app添加到环境变量：~/.bash_profile export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79 ex">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-02T10:16:15.328Z">
+<meta property="og:updated_time" content="2018-05-02T10:17:53.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop 伪分布式环境搭建">
 <meta name="twitter:description" content="Hadoop伪分布式安装步骤JDK 安装（1.8版本及以上） 貌似如果JDK是1.7的话会遇到一些莫名的BUG…比如编译Spark的时候就卡了很久！！  解压：    tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app添加到环境变量：~/.bash_profile export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79 ex">
@@ -422,6 +422,7 @@
 <pre><code>export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79
 export PATH=$JAVA_HOME/bin:$PATH
 </code></pre><p>使得环境变量生效： <code>source ~/.bash_profile</code><br><br>验证Java是否配置成功： <code>java -version</code></p>
+<a id="more"></a>
 <h2 id="安装ssh"><a href="#安装ssh" class="headerlink" title="安装ssh"></a>安装ssh</h2><pre><code>sudo yum install ssh
 </code></pre><p>配置免密码登录</p>
 <pre><code>ssh-keygen -t rsa ==&gt; 会生成密码文件到 /home/hadoop/.ssh/id_rsa 中
