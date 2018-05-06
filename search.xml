@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Pandas中loc,iloc,ix的使用]]></title>
+    <url>%2F2018%2F05%2F06%2FPandas%E4%B8%ADloc-iloc-ix%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[Pandas中loc,iloc,ix的使用使用 iloc 从DataFrame中筛选数据 iloc 是基于“位置”的Dataframe的操作，即主要基于下标的操作 简单使用Pandas中的 iloc 是用基于整数的下标来进行数据定位/选择iloc 的语法是 data.iloc[&lt;row selection&gt;, &lt;column selection&gt;], iloc 在Pandas中是用来通过数字来选择数据中具体的某些行和列。你可以设想每一行都有一个对应的下标（0,1,2，…)，通过 iloc 我们可以利用这些下标去选择相应的行数据。同理，对于行也一样，想象每一列也有对应的下标(0,1,2,…),通过这些下标也可以选择相应的列数据。 在iloc中一共有 2 个 “参数” -行选择器 和 -列选择器，例如： 12345678910# 使用DataFrame 和 iloc 进行单行/列的选择# 行选择：data.iloc[0] # 数据中的第一行data.iloc[1] # 数据中的第二行data.iloc[-1] # 数据中的最后一行# 列选择：data.iloc[:, 0] # 数据中的第一列data.iloc[:, 1] # 数据中的第二列data.iloc[:, -1] # 数据中的最后一列 行列混合选择iloc 同样可以进行和列的混合选择，例如： 12345# 使用 iloc 进行行列混合选择data.iloc[0:5] # 数据中的第 1-5 行data.iloc[:, 0:2] # 选择数据中的前2列和所有行data.iloc[[0, 3, 6, 24], [0, 5, 6]] # 选择第 1,4,7,25行 和 第 1,6,7 列data.iloc[0:5, 5:8] # 选择第1-6行 和 6-9列 使用 iloc 注意以下两点： 如果使用iloc只选择了单独的一行会返回 Series 类型，而如果选择了多行数据则会返回 DataFrame 类型，如果你只选择了一行，但如果想要返回 DataFrame 类型可以传入一个单值list,具体例子看图： 当你使用 [1:5] 这种语法对数据进行切片的时候，要注意只选择了 1,2,3,4 这 4 个下标，而 5 并没有被包括进去，即使用[x:y]选择了下标从 x 到 y-1 的数据 实际工作中，其实很少用到 iloc ，除非你想选择第一行( data.iloc[0] ) 或者 最后一行( data.iloc[-1] ) 使用 loc 从DataFrame中筛选数据可以在以下2中情况下使用 ioc： 使用 基于标签(列头)的下标的 查找 使用 boolean / 有条件的 查找 使用 loc 的语法和 iloc 一样：data.loc[&lt;row selection&gt;, &lt;column selection&gt;] 使用基于标签(列头)的下标数据选择使用 loc 进行数据选择是基于下标的（如果有的话），可以使用 df.set_index() 来设置下标, loc 方法直接通过下标来选择行。例如将”last_name”这一列设置为下标： 1data.set_index("last_name", inplace=True) 效果如图： 现在我们已经将下标设置为”last_name”，这样我们就可以根据”last_name”选择不同的数据了，使用 data.loc[&lt;label&gt;] 同样的可以查找单个值或者多个值，例子如图： 注意，第一个样例代码返回的是 Series 类型，而第二个样例代码返回的是 DataFrame 类型，同样你也可以通过传递一个单值list来返回一个 DataFrame 类型的数据 当然也可以使用 loc 对列进行选择，同时可以选择对列使用 “ : “进行切片选择，效果如图： 同时，你还可以使用 “ : “ 对下标进行切片选择，例如 data.loc[&#39;Bruch&#39;:&#39;Julio&#39;] 会选择从下标为’Bruch’到下标为’Julio’ 的所有行，例如： 123456789# 选择下标值为'Andrade' 和 'Veness',并且从'city'到'email'的所有列data.loc[['Andrade', 'Veness'], ['city':'email']]# 选择和之前相同的行，但只选择'first_name', 'address' 和 'city'这3列data.loc['Andrade':'Veness', ['first_name', 'address', 'city']]# 将下标切换为'id'data.set_index('id', inplace=True) # 在原有数据源上修改# 选择下标（'id'）= 487 的行data.loc[487] 注意：最后一行代码：data.loc[487] 不等价于 data.iloc[487], 前者是选择 ‘id’ = 487 的行，而后者是选择第488行，DataFrame的索引可以是数字顺序的，也可以是字符串或多值的。 使用Boolean / 逻辑判断选择数据使用 boolean 数组进行条件选择是较为常用的手段，使用boolean下标或者逻辑表达式，你可以传递给 loc 一个值为 True/False 的Series或者数组来选择那些 Series或者数组中值为 True 的行。 较多情况下，语句 data[&quot;first_name&quot; == &#39;Antonio&#39;] 会返回一个值为 True/False 的 Series 类型数据，其中 “True” 代表这一行中的 “first_name” 值为 “Antonio”，这些 boolean数组可以直接如图所示传递给 loc 方法： 和之前一样，可以传递给 loc 第2个”参数”用来选择某些列，可以是列举的列名，也可以是用 “ : “ 切片的连续列，如图： 同样要注意：如果只选择了单独的一列，返回的是 Series 类型，同样传递一个单值list可以返回 DataFrame 类型，如图： 通过以下代码可以很好的理解 loc 的使用： 12345678910111213141516171819202122232425# 选择 first_name 为Antonio,并且从 'city' 到 'email'的所有列data.loc[data['first_name'] == 'Antonio', 'city':'email']# 选择那些 email的值中是以 "hotmail.com" 结尾的行，同时选择所有列data.loc[data['email'].str.endswith("hotmail.com")] # 选择那些 "last_name" 等于某些值的行data.loc[data['first_name'].isin(['France', 'Tyisha', 'Eric'])] # 选择 first_name = 'Antonio' 并且 email 是以 "gmail.com"结尾的行data.loc[data['email'].str.endswith("gmail.com") &amp; (data['first_name'] == 'Antonio')] # select rows with id column between 100 and 200, and just return 'postal' and 'web' columns# 选择那些 id 从100到200的行，并且只返回 'postal' 和 'web' 这两列data.loc[(data['id'] &gt; 100) &amp; (data['id'] &lt;= 200), ['postal', 'web']] # lambda函数产生的 True/False 同样可以使用到 loc 中# 选择那些公司名为4个单词的行data.loc[data['company_name'].apply(lambda x: len(x.split(' ')) == 4)] # 为了代码更加清晰， 选择也可以在 .loc 之外进行# 在 .loc 之外单独生成一个变量idx = data['company_name'].apply(lambda x: len(x.split(' ')) == 4)# 只选择 idx 值为True的那些行，并且只选择'email', 'first_name', 'company'这3列data.loc[idx, ['email', 'first_name', 'company']] 顺便说一下Pandas中 map(), apply() 和 applymap()的区别 map() 是 Series 中的函数，DataFrame 中是没有 map() 的，map() 将函数应用于Series中的每一个元素 apply() 和 applymap() 是 DataFrame 中的函数，而在Series中是没有的。他们的区别在于： apply() 将函数作用于DataFrame中的 每一个行或者列，而 applymap() 会将函数作用于DataFrame中的 每一个元素。 使用 loc 修改 DataFrame 中的数据你可以像使用 loc 查询数据那样对数据进行修改，这个操作不会返回新的数据对象而是直接在原数据上进行修改。通过这个操作，你可以根据不同的情况对数据进行修改： 12# 修改 'id' &gt; 2000 的数据中的 'first_name' 为 "John"data.loc[data['id'] &gt; 2000, "first_name"] = "John" 使用 ix 进行选择 现在pandas官方已经不推荐使用 ix 进行选择了，并且将会在 0.20.1版本从Pandas中丢弃]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>pandas</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Hadoop 伪分布式环境搭建]]></title>
     <url>%2F2018%2F05%2F02%2FHadoop-%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%2F</url>
     <content type="text"><![CDATA[Hadoop伪分布式安装步骤JDK 安装（1.8版本及以上） 貌似如果JDK是1.7的话会遇到一些莫名的BUG…比如编译Spark的时候就卡了很久！！ 解压： tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app添加到环境变量：~/.bash_profile export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79 export PATH=$JAVA_HOME/bin:$PATH 使得环境变量生效： source ~/.bash_profile验证Java是否配置成功： java -version 安装sshsudo yum install ssh 配置免密码登录 ssh-keygen -t rsa ==&gt; 会生成密码文件到 /home/hadoop/.ssh/id_rsa 中 cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_k eys ==&gt; 将生成的rsa密钥添加到认证密钥中 下载并解压hadoop下载：直接去cdh网站下载 ==&gt; http://archive.cloudera.com/cdh5/cdh/5/ 解压： tar -zxvf hadoop-2.6.0-cdh5.7.0.tar.gz -C /usr/local //将 hadoop 文件夹解压到 /usr/locla 文件夹下 配置文件的修改（hadoop_home/etc/hadoop）hadoop-env.sh 文件中修改： export JAVA_HOME=/usr/local/jdk1.7.0_80 core-site.xml 文件中添加： &lt;property&gt; &lt;name&gt;fs.defaultFS&lt;/name&gt; &lt;value&gt;hdfs:// localhost:8020&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hadoop.tmp.dir&lt;/name&gt; &lt;value&gt;/hadoop/tmp&lt;/value&gt; &lt;/property&gt; 注：hadoop2.X 版本 将端口从 9000 改为 8020 hdfs-site.xml 文件中添加： &lt;property&gt; &lt;name&gt;dfs.replication&lt;/name&gt; &lt;value&gt;1&lt;/value&gt; &lt;/property&gt; 注：只有一个结点，所以副本设置为1 slaves : 有多少个集群，就将主机名添加到slaves 中 启动 HDFS格式化文件系统（仅第一次执行即可，不要重复执行）：./hadoop namenode -format 也可以配置hadoop环境变量之后直接执行： hadoop namenode -format启动hdfs： sbin/start-dfs.sh 验证是否启动成功： jps DataNode SecondaryNameNode NameNode 浏览器访问方式： http://ip:50070 停止 HDFSsbin/stop-dfs.sh 其他问题启动Hadoop HDFS 而DataNode 无法启动的问题可能是之前执行 format 操作之后 导致 DataNode 和 NameNode 的 clusterID不一样&emsp;解决方法：&emsp;1. 进入 Hadoop 中 core-site.xml 文件中配置的Hadoop 文件存放路径，即 hadoop.tmp.dir&emsp;2. 进入 dfs 文件中，将 data 文件夹中 VERSION 文件中的 clusterID 改为 name文件夹中 VERSION文件中的 clusterID 运行 Hadoop 或者 Spark 出现 (null) entry in command string: null chmod 0644当我们尝试将中间计算结果写入本地文件的时候，可能会报出(null) entry in command string: null chmod 0644的错误解决办法一： 下载 winutils.exe 相关文件 从https://github.com/srccodes/hadoop-common-2.2.0-bin将所有的相关文件下载下来 将下载的整个文件夹放到某个目录下， eg：C:\your_folder\ 在程序的开头添加代码： System.setProperty(&quot;hadoop.home.dir&quot;, &quot;c:\\your_folder\\&quot;) //第二个参数就是下载的文件夹所在的路径]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>大数据</tag>
+        <tag>Hadoop</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[科学上网教程]]></title>
     <url>%2F2018%2F04%2F23%2F%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E6%95%99%E7%A8%8B%2F</url>
-    <content type="text"><![CDATA[科学上网教程 让我们开始愉快的墙外之旅吧~ 注册 Vultr网站进入 https://www.vultr.com/ 进行注册 具体的注册细节就不细说了 注意！！最近新用户注册会赠送 $25 哟~~ 进入 https://www.vultr.com/ 进行注册 这样就注册成功了 选择左侧栏的 Billing 进入左侧栏的 Servers 选择相应配置 继续配置 这样就配置好了，然后进入详情记录ip地址、root密码等相关属性 使用XShell连接服务器我们这里使用 XShell 连接我们配置好的远程服务器( XShell 使用方法就不赘述了)输入之前的 ip、root 密码等属性，登录远程服务器 锐速更换内核 输入命令： 1rpm -ivh http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-firmware-2.6.32-504.3.3.el6.noarch.rpm 然后输入命令： 1rpm -ivh http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-2.6.32-504.3.3.el6.x86_64.rpm --force 最后重启服务器： reboot 安装锐速 输入命令： 1wget -N --no-check-certificate https://softs.fun/Bash/ssr.sh &amp;&amp; chmod +x ssr.sh &amp;&amp; bash ssr.sh 选择 14 其他功能 配置锐速 选择安装锐速 安装成功 安装libsodium(chacha20) 选择 4 安装libsodium 输入 y 安装成功 安装ShadowSocksR 选择 1 安装ShadowSocksR 配置端口和密码 端口最好配置为 8开头的！！！密码自己记好就行 配置ShadowSocksR加密方式： 15. chacha20协议插件： 4. auth_aes128_shal混淆插件： 5. tlsl.2_ticket_auth 这里输入 y 之后就连续敲三个回车 漫长等待之后，离成功就差一点点了复制这里的SSR二维码，后面会用到 PC端配置 PC端我们使用 ShadowsocksR 进行墙外之旅这里下载ShadowsocksR文件 链接：git@github.com:danielAck/ShadowsocksR.git放到百度网盘很容易被河蟹… 使用其中的 ShadowsocksR-dotnet4.0.exe 文件 运行后在隐藏图标中找到这个小飞机然后右键点击，选择 粘贴板批量导入ssr://连接… 选择我们配置的服务器，点击确定就可以享受愉快的墙外之旅啦~ 大功告成！]]></content>
+    <content type="text"><![CDATA[科学上网教程 让我们开始愉快的墙外之旅吧~ 注册 Vultr网站进入 https://www.vultr.com/ 进行注册 具体的注册细节就不细说了 注意！！最近新用户注册会赠送 $25 哟~~先去注册一个PayPal，然后用你的PayPal账号支付$10，就能获得赠送的$25了~ 进入 https://www.vultr.com/ 进行注册 这样就注册成功了 选择左侧栏的 Billing 进入左侧栏的 Servers 选择相应配置 继续配置 这样就配置好了，然后进入详情记录ip地址、root密码等相关属性 使用XShell连接服务器我们这里使用 XShell 连接我们配置好的远程服务器( XShell 使用方法就不赘述了)输入之前的 ip、root 密码等属性，登录远程服务器 锐速更换内核 输入命令： 1rpm -ivh http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-firmware-2.6.32-504.3.3.el6.noarch.rpm 然后输入命令： 1rpm -ivh http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-2.6.32-504.3.3.el6.x86_64.rpm --force 最后重启服务器：执行命令 1reboot 安装锐速 输入命令： 1wget -N --no-check-certificate https://softs.fun/Bash/ssr.sh &amp;&amp; chmod +x ssr.sh &amp;&amp; bash ssr.sh 选择 14 其他功能 配置锐速 选择安装锐速 安装成功 安装libsodium(chacha20) 选择 4 安装libsodium 输入 y 安装成功 安装ShadowSocksR 选择 1 安装ShadowSocksR 配置端口和密码 端口最好配置为 8开头的！！！密码自己记好就行 配置ShadowSocksR加密方式： 15. chacha20协议插件： 4. auth_aes128_shal混淆插件： 5. tlsl.2_ticket_auth 这里输入 y 之后就连续敲三个回车 漫长等待之后，离成功就差一点点了复制这里的SSR二维码，后面会用到 PC端配置 PC端我们使用 ShadowsocksR 进行墙外之旅这里下载ShadowsocksR文件 链接：git@github.com:danielAck/ShadowsocksR.git放到百度网盘很容易被河蟹… 使用其中的 ShadowsocksR-dotnet4.0.exe 文件 运行后在隐藏图标中找到这个小飞机然后右键点击，选择 粘贴板批量导入ssr://连接… 选择我们配置的服务器，点击确定就可以享受愉快的墙外之旅啦~ 大功告成！]]></content>
       <categories>
         <category>技术</category>
       </categories>
@@ -26,17 +45,6 @@
       <tags>
         <tag>Java</tag>
         <tag>HashCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[我的第一篇文章]]></title>
-    <url>%2F2018%2F04%2F22%2F%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%2F</url>
-    <content type="text"><![CDATA[注意！注意！这是第一次文章测试！！ 这是代码测试python 代码 import numpy as np import pandas as pd import matplotlib as plt print(&quot;Hello word!&quot;) Java 代码 System.out.println(&quot;Hello World!&quot;); 这是 MathJax 公式测试\sum_{i=0}^N\int_{a}^{b}g(t,i)\text{d}t]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>闲聊</tag>
       </tags>
   </entry>
 </search>
