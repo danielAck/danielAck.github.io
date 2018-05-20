@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://danielack.github.io/2018/05/20/Logistic%20Regression%E7%9A%84%E7%90%86%E8%A7%A3/</loc>
+    
+    <lastmod>2018-05-20T13:55:20.386Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://danielack.github.io/2018/05/06/Pandas%E4%B8%ADloc-iloc-ix%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
     
     <lastmod>2018-05-06T14:49:02.493Z</lastmod>

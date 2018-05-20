@@ -109,7 +109,7 @@
 
 
 
-  <meta name="keywords" content="大数据,Hadoop," />
+  <meta name="keywords" content="机器学习,Logistic Regression," />
 
 
 
@@ -120,18 +120,21 @@
 
 
 
-<meta name="description" content="Hadoop伪分布式安装步骤JDK 安装（1.8版本及以上） 貌似如果JDK是1.7的话会遇到一些莫名的BUG…比如编译Spark的时候就卡了很久！！  解压：    tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app添加到环境变量：~/.bash_profile export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79 ex">
-<meta name="keywords" content="大数据,Hadoop">
+<meta name="description" content="今天学习了周志华教授的西瓜书的第三章 - 线性模型，在知乎上看到了一些关于线性模型不错的理解，在此记录和分享一下">
+<meta name="keywords" content="机器学习,Logistic Regression">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop 伪分布式环境搭建">
-<meta property="og:url" content="https://danielack.github.io/2018/05/02/Hadoop-伪分布式环境搭建/index.html">
+<meta property="og:title" content="关于Logistic Regression的理解">
+<meta property="og:url" content="https://danielack.github.io/2018/05/20/Logistic Regression的理解/index.html">
 <meta property="og:site_name" content="Daniel_Codezone">
-<meta property="og:description" content="Hadoop伪分布式安装步骤JDK 安装（1.8版本及以上） 貌似如果JDK是1.7的话会遇到一些莫名的BUG…比如编译Spark的时候就卡了很久！！  解压：    tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app添加到环境变量：~/.bash_profile export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79 ex">
+<meta property="og:description" content="今天学习了周志华教授的西瓜书的第三章 - 线性模型，在知乎上看到了一些关于线性模型不错的理解，在此记录和分享一下">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-06T14:41:37.406Z">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/1.jpg">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/2.jpg">
+<meta property="og:updated_time" content="2018-05-20T13:55:20.386Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop 伪分布式环境搭建">
-<meta name="twitter:description" content="Hadoop伪分布式安装步骤JDK 安装（1.8版本及以上） 貌似如果JDK是1.7的话会遇到一些莫名的BUG…比如编译Spark的时候就卡了很久！！  解压：    tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app添加到环境变量：~/.bash_profile export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79 ex">
+<meta name="twitter:title" content="关于Logistic Regression的理解">
+<meta name="twitter:description" content="今天学习了周志华教授的西瓜书的第三章 - 线性模型，在知乎上看到了一些关于线性模型不错的理解，在此记录和分享一下">
+<meta name="twitter:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/1.jpg">
 
 
 
@@ -161,13 +164,13 @@
 
 
 
-  <link rel="canonical" href="https://danielack.github.io/2018/05/02/Hadoop-伪分布式环境搭建/"/>
+  <link rel="canonical" href="https://danielack.github.io/2018/05/20/Logistic Regression的理解/"/>
 
 
 
 
 
-  <title>Hadoop 伪分布式环境搭建 | Daniel_Codezone</title>
+  <title>关于Logistic Regression的理解 | Daniel_Codezone</title>
   
 
 
@@ -328,7 +331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://danielack.github.io/2018/05/02/Hadoop-伪分布式环境搭建/">
+    <link itemprop="mainEntityOfPage" href="https://danielack.github.io/2018/05/20/Logistic Regression的理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Daniel_柏桦">
@@ -345,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hadoop 伪分布式环境搭建</h1>
+          <h1 class="post-title" itemprop="name headline">关于Logistic Regression的理解</h1>
         
 
         <div class="post-meta">
@@ -357,8 +360,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T13:48:28+08:00">
-                2018-05-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-20T20:03:21+08:00">
+                2018-05-20
               </time>
             
 
@@ -380,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -398,8 +401,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/02/Hadoop-伪分布式环境搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/05/02/Hadoop-伪分布式环境搭建/" itemprop="commentsCount"></span>
+                <a href="/2018/05/20/Logistic Regression的理解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/05/20/Logistic Regression的理解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -407,7 +410,7 @@
 
           
           
-             <span id="/2018/05/02/Hadoop-伪分布式环境搭建/" class="leancloud_visitors" data-flag-title="Hadoop 伪分布式环境搭建">
+             <span id="/2018/05/20/Logistic Regression的理解/" class="leancloud_visitors" data-flag-title="关于Logistic Regression的理解">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -438,62 +441,43 @@
       
 
       
-        <h1 id="Hadoop伪分布式安装步骤"><a href="#Hadoop伪分布式安装步骤" class="headerlink" title="Hadoop伪分布式安装步骤"></a>Hadoop伪分布式安装步骤</h1><h2 id="JDK-安装（1-8版本及以上）"><a href="#JDK-安装（1-8版本及以上）" class="headerlink" title="JDK 安装（1.8版本及以上）"></a>JDK 安装（1.8版本及以上）</h2><blockquote>
-<p>貌似如果JDK是1.7的话会遇到一些莫名的BUG…<br>比如编译Spark的时候就卡了很久！！</p>
+        <blockquote>
+<p>今天学习了周志华教授的西瓜书的第三章 - 线性模型，在知乎上看到了一些关于线性模型不错的理解，在此记录和分享一下</p>
 </blockquote>
-<p>解压：<br>    <code>tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app</code><br><br>添加到环境变量：<br><code>~/.bash_profile</code><br></p>
-<pre><code>export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79
-export PATH=$JAVA_HOME/bin:$PATH
-</code></pre><p>使得环境变量生效： <code>source ~/.bash_profile</code><br><br>验证Java是否配置成功： <code>java -version</code></p>
 <a id="more"></a>
-<h2 id="安装ssh"><a href="#安装ssh" class="headerlink" title="安装ssh"></a>安装ssh</h2><pre><code>sudo yum install ssh
-</code></pre><p>配置免密码登录</p>
-<pre><code>ssh-keygen -t rsa ==&gt; 会生成密码文件到 /home/hadoop/.ssh/id_rsa 中
-cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_k eys ==&gt; 将生成的rsa密钥添加到认证密钥中
-</code></pre><h2 id="下载并解压hadoop"><a href="#下载并解压hadoop" class="headerlink" title="下载并解压hadoop"></a>下载并解压hadoop</h2><p>下载：<br><br>直接去cdh网站下载 ==&gt; <a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a></p>
-<p>解压：</p>
-<pre><code>tar -zxvf hadoop-2.6.0-cdh5.7.0.tar.gz -C /usr/local
-//将 hadoop 文件夹解压到 /usr/locla 文件夹下
-</code></pre><h2 id="配置文件的修改（hadoop-home-etc-hadoop）"><a href="#配置文件的修改（hadoop-home-etc-hadoop）" class="headerlink" title="配置文件的修改（hadoop_home/etc/hadoop）"></a>配置文件的修改（hadoop_home/etc/hadoop）</h2><p><code>hadoop-env.sh</code> 文件中修改：</p>
-<pre><code>export JAVA_HOME=/usr/local/jdk1.7.0_80
-</code></pre><p><code>core-site.xml</code> 文件中添加：</p>
-<pre><code> &lt;property&gt;
-      &lt;name&gt;fs.defaultFS&lt;/name&gt;
-      &lt;value&gt;hdfs:// localhost:8020&lt;/value&gt;
- &lt;/property&gt;
- &lt;property&gt;
-      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
-      &lt;value&gt;/hadoop/tmp&lt;/value&gt;
- &lt;/property&gt;
- 注：hadoop2.X 版本 将端口从 9000 改为 8020
-</code></pre><p><code>hdfs-site.xml</code> 文件中添加：</p>
-<pre><code> &lt;property&gt;
-      &lt;name&gt;dfs.replication&lt;/name&gt;
-      &lt;value&gt;1&lt;/value&gt;
- &lt;/property&gt;
-  注：只有一个结点，所以副本设置为1
-</code></pre><p><code>slaves</code> : 有多少个集群，就将主机名添加到slaves 中 </p>
-<h2 id="启动-HDFS"><a href="#启动-HDFS" class="headerlink" title="启动 HDFS"></a>启动 HDFS</h2><p>格式化文件系统（仅第一次执行即可，不要重复执行）：./hadoop namenode -format <br><br>也可以配置hadoop环境变量之后直接执行： hadoop namenode -format<br><br>启动hdfs： sbin/start-dfs.sh<br></p>
-<p>验证是否启动成功：</p>
-<pre><code>jps
-DataNode
-SecondaryNameNode
-NameNode
-</code></pre><p>浏览器访问方式： <code>http://ip:50070</code></p>
-<h2 id="停止-HDFS"><a href="#停止-HDFS" class="headerlink" title="停止 HDFS"></a>停止 HDFS</h2><pre><code>sbin/stop-dfs.sh
-</code></pre><h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><h3 id="启动Hadoop-HDFS-而DataNode-无法启动的问题"><a href="#启动Hadoop-HDFS-而DataNode-无法启动的问题" class="headerlink" title="启动Hadoop HDFS 而DataNode 无法启动的问题"></a>启动Hadoop HDFS 而DataNode 无法启动的问题</h3><p>可能是之前执行 format 操作之后 导致 DataNode 和 NameNode 的 clusterID不一样<br><br>&emsp;解决方法：<br><br>&emsp;1. 进入 Hadoop 中 core-site.xml 文件中配置的Hadoop 文件存放路径，即 hadoop.tmp.dir<br><br>&emsp;2. 进入 dfs 文件中，将 data 文件夹中 VERSION 文件中的 clusterID 改为 name文件夹中 VERSION文件中的 clusterID</p>
-<h3 id="运行-Hadoop-或者-Spark-出现-null-entry-in-command-string-null-chmod-0644"><a href="#运行-Hadoop-或者-Spark-出现-null-entry-in-command-string-null-chmod-0644" class="headerlink" title="运行 Hadoop 或者 Spark 出现 (null) entry in command string: null chmod 0644"></a>运行 Hadoop 或者 Spark 出现 (null) entry in command string: null chmod 0644</h3><p>当我们尝试将中间计算结果写入本地文件的时候，可能会报出(null) entry in command string: null chmod 0644的错误<br><br><strong>解决办法一：</strong><br></p>
+<h2 id="关于Logistic-Regression处理非线性平面的问题"><a href="#关于Logistic-Regression处理非线性平面的问题" class="headerlink" title="关于Logistic Regression处理非线性平面的问题"></a>关于Logistic Regression处理非线性平面的问题</h2><p>在看到 Andrew Ng 教授的机器学习中关于Logistic Regression的视频的时候，看到有关决策边界的内容，看到这个图的时候想着这只是线性的情况，那Logistic Regression 是否能处理非线性的情况呢？</p>
+<p><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/1.jpg" alt=""></p>
+<p>（原谅当时没看到视频的后面，其实视频的后面有提到非线性的情况）</p>
+<p>Logistic Regression 其实是以线性回归算法为基础的，只不过Logistic Regression 模型中在计算最终结果时，为了将连续的结果转换为 <code>[0. 1]</code> 的概率值而引入了 <code>sigmoid</code> 函数映射.</p>
+<h3 id="这里重点说一下关于-“线性”-的理解"><a href="#这里重点说一下关于-“线性”-的理解" class="headerlink" title="这里重点说一下关于 “线性” 的理解"></a>这里重点说一下关于 “线性” 的理解</h3><p>这里的“线性”指的是参数 θ 关于模型是线性关系，即以下关系：</p>
+<script type="math/tex; mode=display">z=\theta^Tx=\theta_0x_0+\theta_1x_1+\cdots+\theta_nx_n</script><p>但是，变量 $x_i$ 关于模型却可以是线性的或是非线性的，下面通过一个例子可以解释：</p>
+<p>有一个二分类问题： 房子值不值得买（0 -&gt; 值得买; 1 -&gt; 不值得买）<br>此时假设有两个变量 $x_0$ &amp; $x_1$ 分别代表房子的长度和房子的宽度，而特征有两个： $f1=x_1$ (房子的长度) ; $f_2=2x_2$（两倍的房子的宽度），此时可以用公式：</p>
+<script type="math/tex; mode=display">z=\theta_0x_0+\theta_12x_1</script><p>表示，此时无论是模型关于 参数 还是 模型 关于变量$x_0$、 $x_1$都是 <strong>线性的关系</strong>。如果房子值不值得买符合线性关系，那么这个时候就已经解决问题了，但是，如果问题并不是一个简单的线性模型，即分类平面不是线性的关系（<strong>重点来了，这里的不是线性的关系指代的是模型结果关于$x_0$和$x_1$不是线性关系</strong>）</p>
+<p>这个时候我们可以利用 $x_0$ 和 $x_1$ 构造出一个<strong>非线性的关系</strong>出来，例如构造出一个新的变量 $x_1=x_1^2+12$ 这个时候模型关于新的变量就不是线性关系了。</p>
+<p>但是注意：此时的模型关于参数 θ 任然是线性的，也即最后训练出来的模型任然是一个线性模型，只不过我们构造出了关于模型的非线性特征使得模型能够更好的拟合到数据中的非线性的特点。</p>
+<p>这里再举一个栗子：</p>
+<p>假如我们要实际预测的问题的分布是这样的：<br><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/2.jpg" alt=""></p>
+<p>此时，分布属于非线性的情况，因为我们有两个变量：$x_1$ 和 $x_2$，如果仅用 $x_1$ 和 $x_2$ 的线性组合我们永远也无法很好的拟合这些数据</p>
+<p>但是，如果我们将原来的 $x_1$ 和 $x_2$ 映射为：$x_1^{‘}=x_1^2$ 和 $x_2^{‘}=x_2^2$ 这个时候模型关于新的变量 $x_1^{‘}$ 和 $x_2^{‘}$ 就是线性的关系了，我们可以用：</p>
+<script type="math/tex; mode=display">z=\theta_0x_1^{'}+\theta1x_2^{'}</script><p>表示新的模型，从而很好的拟合原有的数据</p>
+<p>从上面的例子我们可以看出，在对Logistic Regression建模的过程中，特征的构建显得很重要。当数据分布对应非线性时，我们就需要找到合适的映射函数 $\phi(x)$ 使得模型能够横好的处理非线性决策边界</p>
+<p><strong>总结一下</strong></p>
 <ul>
-<li><p>下载 winutils.exe 相关文件<br><br> 从<a href="https://github.com/srccodes/hadoop-common-2.2.0-bin将所有的相关文件下载下来" target="_blank" rel="noopener">https://github.com/srccodes/hadoop-common-2.2.0-bin将所有的相关文件下载下来</a></p>
+<li><p>对于Logistic Regression 来说本质上属于线性回归模型，因为模型关于系数 θ 是线性函数</p>
 </li>
-<li><p>将下载的整个文件夹放到某个目录下， eg：C:\your_folder\</p>
+<li><p>对于分离平面，无论是线性的还是非线性的，Logistic Regression 其实都可以分类，只不过对于非线性的情况下需要自己去寻找关于原变量的一个非线性映射（如例子中的 $x_1\to x_1^2$）</p>
 </li>
-<li><p>在程序的开头添加代码：<br></p>
-<pre><code class="lang-scala">System.setProperty(&quot;hadoop.home.dir&quot;, &quot;c:\\your_folder\\&quot;)
-//第二个参数就是下载的文件夹所在的路径
-</code></pre>
+<li><p>对于非线性情况下的映射函数的构建至关重要，决定了模型能否很好的拟合非线性决策边界 </p>
 </li>
 </ul>
+<blockquote>
+<p>等看到 SVM 的时候会把Logistic Regression 和 SVM 针对线性情况和非线性情况再做一个对比</p>
+</blockquote>
+<p>原知乎的答案如下：</p>
+<blockquote>
+<p>题主提到了SVM，区别是，SVM如果不用核函数，也得像逻辑回归一样，在映射后的高维空间显示的定义非线性映射函数$\phi$,而引入了核函数之后，可以在低维空间做完点积计算后，映射到高维</p>
+</blockquote>
+<p>原知乎连接：逻辑斯蒂回归能否解决非线性分类问题？ - 辛俊波的回答 - 知乎<br><a href="https://www.zhihu.com/question/29385169/answer/44177582" target="_blank" rel="noopener">https://www.zhihu.com/question/29385169/answer/44177582</a></p>
 
       
     </div>
@@ -510,12 +494,12 @@ NameNode
   <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-  <p><span>本文标题:</span><a href="/2018/05/02/Hadoop-伪分布式环境搭建/">Hadoop 伪分布式环境搭建</a></p>
+  <p><span>本文标题:</span><a href="/2018/05/20/Logistic Regression的理解/">关于Logistic Regression的理解</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
-  <p><span>发布时间:</span>2018年05月02日 - 13:05</p>
-  <p><span>最后更新:</span>2018年05月06日 - 22:05</p>
-  <p><span>原始链接:</span><a href="/2018/05/02/Hadoop-伪分布式环境搭建/" title="Hadoop 伪分布式环境搭建">https://danielack.github.io/2018/05/02/Hadoop-伪分布式环境搭建/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/02/Hadoop-伪分布式环境搭建/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2018年05月20日 - 20:05</p>
+  <p><span>最后更新:</span>2018年05月20日 - 21:05</p>
+  <p><span>原始链接:</span><a href="/2018/05/20/Logistic Regression的理解/" title="关于Logistic Regression的理解">https://danielack.github.io/2018/05/20/Logistic Regression的理解/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/20/Logistic Regression的理解/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -575,9 +559,9 @@ NameNode
       
         <div class="post-tags">
           
-            <a href="/tags/大数据/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+            <a href="/tags/机器学习/" rel="tag"><i class="fa fa-tag"></i> 机器学习</a>
           
-            <a href="/tags/Hadoop/" rel="tag"><i class="fa fa-tag"></i> Hadoop</a>
+            <a href="/tags/Logistic-Regression/" rel="tag"><i class="fa fa-tag"></i> Logistic Regression</a>
           
         </div>
       
@@ -590,8 +574,8 @@ NameNode
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/23/科学上网教程/" rel="next" title="科学上网教程">
-                <i class="fa fa-chevron-left"></i> 科学上网教程
+              <a href="/2018/05/06/Pandas中loc-iloc-ix的使用/" rel="next" title="Pandas中loc,iloc,ix的使用">
+                <i class="fa fa-chevron-left"></i> Pandas中loc,iloc,ix的使用
               </a>
             
           </div>
@@ -599,10 +583,6 @@ NameNode
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/06/Pandas中loc-iloc-ix的使用/" rel="prev" title="Pandas中loc,iloc,ix的使用">
-                Pandas中loc,iloc,ix的使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -767,7 +747,7 @@ NameNode
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hadoop伪分布式安装步骤"><span class="nav-number">1.</span> <span class="nav-text">Hadoop伪分布式安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK-安装（1-8版本及以上）"><span class="nav-number">1.1.</span> <span class="nav-text">JDK 安装（1.8版本及以上）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ssh"><span class="nav-number">1.2.</span> <span class="nav-text">安装ssh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载并解压hadoop"><span class="nav-number">1.3.</span> <span class="nav-text">下载并解压hadoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件的修改（hadoop-home-etc-hadoop）"><span class="nav-number">1.4.</span> <span class="nav-text">配置文件的修改（hadoop_home/etc/hadoop）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动-HDFS"><span class="nav-number">1.5.</span> <span class="nav-text">启动 HDFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止-HDFS"><span class="nav-number">1.6.</span> <span class="nav-text">停止 HDFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他问题"><span class="nav-number">1.7.</span> <span class="nav-text">其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Hadoop-HDFS-而DataNode-无法启动的问题"><span class="nav-number">1.7.1.</span> <span class="nav-text">启动Hadoop HDFS 而DataNode 无法启动的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行-Hadoop-或者-Spark-出现-null-entry-in-command-string-null-chmod-0644"><span class="nav-number">1.7.2.</span> <span class="nav-text">运行 Hadoop 或者 Spark 出现 (null) entry in command string: null chmod 0644</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Logistic-Regression处理非线性平面的问题"><span class="nav-number">1.</span> <span class="nav-text">关于Logistic Regression处理非线性平面的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#这里重点说一下关于-“线性”-的理解"><span class="nav-number">1.1.</span> <span class="nav-text">这里重点说一下关于 “线性” 的理解</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -960,7 +940,7 @@ NameNode
       <script type="text/javascript">
       function renderGitment(){
         var gitment = new Gitmint({
-            id: '1525240108000', 
+            id: '1526817801000', 
             owner: 'danielAck',
             repo: 'danielAck.github.io',
             
@@ -1443,6 +1423,26 @@ NameNode
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
