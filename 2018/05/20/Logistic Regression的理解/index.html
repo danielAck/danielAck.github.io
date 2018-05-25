@@ -130,7 +130,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/1.jpg">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/2.jpg">
-<meta property="og:updated_time" content="2018-05-20T13:55:20.386Z">
+<meta property="og:updated_time" content="2018-05-22T16:14:15.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Logistic Regression的理解">
 <meta name="twitter:description" content="今天学习了周志华教授的西瓜书的第三章 - 线性模型，在知乎上看到了一些关于线性模型不错的理解，在此记录和分享一下">
@@ -445,7 +445,7 @@
 <p>今天学习了周志华教授的西瓜书的第三章 - 线性模型，在知乎上看到了一些关于线性模型不错的理解，在此记录和分享一下</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="关于Logistic-Regression处理非线性平面的问题"><a href="#关于Logistic-Regression处理非线性平面的问题" class="headerlink" title="关于Logistic Regression处理非线性平面的问题"></a>关于Logistic Regression处理非线性平面的问题</h2><p>在看到 Andrew Ng 教授的机器学习中关于Logistic Regression的视频的时候，看到有关决策边界的内容，看到这个图的时候想着这只是线性的情况，那Logistic Regression 是否能处理非线性的情况呢？</p>
+<h2 id="关于Logistic-Regression处理非线性平面的问题"><a href="#关于Logistic-Regression处理非线性平面的问题" class="headerlink" title="关于Logistic Regression处理非线性平面的问题"></a>关于Logistic Regression处理非线性平面的问题</h2><p>在看到 Andrew Ng 教授的机器学习中关于 Logistic Regression 的视频的时候，看到有关决策边界的内容，看到这个图的时候想着这只是线性的情况，那 Logistic Regression 是否能处理非线性的情况呢？</p>
 <p><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/LR_intuition/1.jpg" alt=""></p>
 <p>（原谅当时没看到视频的后面，其实视频的后面有提到非线性的情况）</p>
 <p>Logistic Regression 其实是以线性回归算法为基础的，只不过Logistic Regression 模型中在计算最终结果时，为了将连续的结果转换为 <code>[0. 1]</code> 的概率值而引入了 <code>sigmoid</code> 函数映射.</p>
@@ -460,7 +460,7 @@
 <p>此时，分布属于非线性的情况，因为我们有两个变量：$x_1$ 和 $x_2$，如果仅用 $x_1$ 和 $x_2$ 的线性组合我们永远也无法很好的拟合这些数据</p>
 <p>但是，如果我们将原来的 $x_1$ 和 $x_2$ 映射为：$x_1^{‘}=x_1^2$ 和 $x_2^{‘}=x_2^2$ 这个时候模型关于新的变量 $x_1^{‘}$ 和 $x_2^{‘}$ 就是线性的关系了，我们可以用：</p>
 <script type="math/tex; mode=display">z=\theta_0x_1^{'}+\theta1x_2^{'}</script><p>表示新的模型，从而很好的拟合原有的数据</p>
-<p>从上面的例子我们可以看出，在对Logistic Regression建模的过程中，特征的构建显得很重要。当数据分布对应非线性时，我们就需要找到合适的映射函数 $\phi(x)$ 使得模型能够横好的处理非线性决策边界</p>
+<p>从上面的例子我们可以看出，在对Logistic Regression建模的过程中，特征的构建显得很重要。当数据分布对应非线性时，我们就需要找到合适的映射函数 $\phi(x)$ 使得模型能够很好的处理非线性决策边界</p>
 <p><strong>总结一下</strong></p>
 <ul>
 <li><p>对于Logistic Regression 来说本质上属于线性回归模型，因为模型关于系数 θ 是线性函数</p>
@@ -497,7 +497,7 @@
   <p><span>本文标题:</span><a href="/2018/05/20/Logistic Regression的理解/">关于Logistic Regression的理解</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
   <p><span>发布时间:</span>2018年05月20日 - 20:05</p>
-  <p><span>最后更新:</span>2018年05月20日 - 21:05</p>
+  <p><span>最后更新:</span>2018年05月23日 - 00:05</p>
   <p><span>原始链接:</span><a href="/2018/05/20/Logistic Regression的理解/" title="关于Logistic Regression的理解">https://danielack.github.io/2018/05/20/Logistic Regression的理解/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/20/Logistic Regression的理解/"  aria-label="复制成功！"></i></span>
   </p>
@@ -583,6 +583,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/22/机器学习笔记/" rel="prev" title="西瓜书机器学习笔记">
+                西瓜书机器学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -670,7 +674,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
