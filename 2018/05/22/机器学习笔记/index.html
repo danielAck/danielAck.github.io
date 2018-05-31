@@ -129,7 +129,7 @@
 <meta property="og:description" content="对西瓜书的知识点进行一个梳理">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/bias_var.jpg">
-<meta property="og:updated_time" content="2018-05-29T16:01:20.480Z">
+<meta property="og:updated_time" content="2018-05-31T15:57:47.274Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="西瓜书机器学习笔记">
 <meta name="twitter:description" content="对西瓜书的知识点进行一个梳理">
@@ -450,11 +450,7 @@
 <li><p>预测分为两类任务：</p>
 <ul>
 <li><strong>分类任务</strong>： 预测的结果是离散值<ul>
-<li>二分类任务，其中标签为(0 </li>
-<li></li>
-<li></li>
-<li></li>
-<li>1 代表正例/负例)</li>
+<li>二分类任务，其中标签为(0 / 1 代表 正例/负例)</li>
 <li>多分类任务，类别数目 k &gt; 2</li>
 </ul>
 </li>
@@ -760,7 +756,50 @@
 <li>C4.5， 使用 <strong>增益率</strong> 进行特征选择</li>
 <li>CART， 使用 <strong>基尼系数</strong> 进行特征选择</li>
 </ul>
-<h3 id="4-4-决策树的剪枝"><a href="#4-4-决策树的剪枝" class="headerlink" title="4.4 决策树的剪枝"></a>4.4 决策树的剪枝</h3>
+<h3 id="4-4-决策树的剪枝"><a href="#4-4-决策树的剪枝" class="headerlink" title="4.4 决策树的剪枝"></a>4.4 决策树的剪枝</h3><p>剪枝策略</p>
+<ul>
+<li>预剪枝</li>
+<li>后剪枝</li>
+</ul>
+<p><strong>预剪枝</strong></p>
+<ul>
+<li>在划分结点前估计，若划分结点后不能提升泛化性能，则停止划分</li>
+<li>使用贪心的策略，有可能陷入局部最优</li>
+<li>带来欠拟合的风险</li>
+</ul>
+<p><strong>后剪枝</strong></p>
+<ul>
+<li>等决策树完全生成好之后，再从下而上的进行剪枝</li>
+<li>剪枝策略：<ul>
+<li>将结点的子树替换为叶节点，观察泛化性能是否提升，如果提升则将子树替换为叶节点，否则不进行剪枝</li>
+<li>根据奥卡姆剃刀原则，如果泛化性能不变依然应该选择剪枝，形成更简单的决策树</li>
+</ul>
+</li>
+<li>可以较好的防止过拟合，但是时间开销很大</li>
+</ul>
+<p>这里的泛化性能评估标准可以是 <strong>精度</strong></p>
+<h3 id="4-5-连续与缺失值"><a href="#4-5-连续与缺失值" class="headerlink" title="4.5 连续与缺失值"></a>4.5 连续与缺失值</h3><h4 id="4-5-1-连续值的处理"><a href="#4-5-1-连续值的处理" class="headerlink" title="4.5.1 连续值的处理"></a>4.5.1 连续值的处理</h4><p>假设属性 <strong>A</strong> 为连续值属性， <strong>A</strong> 属性共有 <strong>N</strong> 个不同的值</p>
+<ul>
+<li>将这 <strong>N</strong> 个不同的值进行排序</li>
+<li>依次选取划分点 <strong>t</strong>，大于划分点 <strong>t</strong> 的记为 $D_t^+$, 同理，小于 <strong>t</strong> 的记为 $D_t^-$</li>
+<li>这样，可以将每一个取值都作为一次划分点，然后计算 <strong>信息增益</strong>, 最后可以得到属性 <strong>A</strong> 的信息增益</li>
+<li>后续就跟离散值的做法一样了</li>
+</ul>
+<h4 id="4-5-2-缺失值的处理"><a href="#4-5-2-缺失值的处理" class="headerlink" title="4.5.2 缺失值的处理"></a>4.5.2 缺失值的处理</h4><p>当计算属性 A 的信息增益时，如果发现有样本有缺失值：</p>
+<ul>
+<li>初始将所有样本赋予 <strong>1</strong> 的 <strong>权值</strong></li>
+<li>计算三个概率（主要都是针对不含有确实值的样本）</li>
+<li>利用这三个概率计算相应的信息增益</li>
+<li><strong>更新含有缺失值的样本的权值，并划入每一个结点</strong></li>
+<li>后续与普通的操作相同</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>更新权值相当于以不同的概率将样本划分进每一个结点</li>
+<li>因为含有缺失值的样本可能接下来还要参加其他属性的信息增益的计算，而计算中会涉及权值，所以 <strong>权值</strong> 相当于对带有缺失值的样本的 <strong>影响力</strong></li>
+</ul>
+<h3 id="4-6-多变量决策树"><a href="#4-6-多变量决策树" class="headerlink" title="4.6 多变量决策树"></a>4.6 多变量决策树</h3><p>相当于对特征进行了一个线性的组合，之前的特征是单变量，组合之后单个结点相当于一个 <strong>线性的分类器</strong></p>
+
       
     </div>
     
@@ -779,7 +818,7 @@
   <p><span>本文标题:</span><a href="/2018/05/22/机器学习笔记/">西瓜书机器学习笔记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
   <p><span>发布时间:</span>2018年05月22日 - 20:05</p>
-  <p><span>最后更新:</span>2018年05月30日 - 00:05</p>
+  <p><span>最后更新:</span>2018年05月31日 - 23:05</p>
   <p><span>原始链接:</span><a href="/2018/05/22/机器学习笔记/" title="西瓜书机器学习笔记">https://danielack.github.io/2018/05/22/机器学习笔记/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/22/机器学习笔记/"  aria-label="复制成功！"></i></span>
   </p>
@@ -1027,7 +1066,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-绪论"><span class="nav-number">1.</span> <span class="nav-text">第一章 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-基本术语"><span class="nav-number">1.1.</span> <span class="nav-text">1.2 基本术语</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-模型评估与选择"><span class="nav-number">2.</span> <span class="nav-text">第二章 模型评估与选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-经验误差与过拟合"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 经验误差与过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-评估方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试集的划分方法"><span class="nav-number">2.2.1.</span> <span class="nav-text">测试集的划分方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-性能度量"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-错误率与精度"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 错误率与精度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-查准率、查全率与-F1"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 查准率、查全率与 F1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-ROC与AUC"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 ROC与AUC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-代价敏感错误率与代价曲线"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 代价敏感错误率与代价曲线</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-比较检验"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 比较检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-偏差与方差"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 偏差与方差</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第3章-线性模型"><span class="nav-number">3.</span> <span class="nav-text">第3章 线性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-基本形式"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 基本形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-线性回归"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-对数几率回归"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 对数几率回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-线性判别分析"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 线性判别分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-多分类学习"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 多分类学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多分类"><span class="nav-number">3.5.1.</span> <span class="nav-text">多对多分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-类别不平衡问题"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 类别不平衡问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#“再缩放”-思想"><span class="nav-number">3.6.1.</span> <span class="nav-text">“再缩放” 思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欠采样、过采样思想"><span class="nav-number">3.6.2.</span> <span class="nav-text">欠采样、过采样思想</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第4章-决策树"><span class="nav-number">4.</span> <span class="nav-text">第4章 决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-特征选择（划分选择）"><span class="nav-number">4.1.</span> <span class="nav-text">4.2 特征选择（划分选择）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-决策树的生成"><span class="nav-number">4.2.</span> <span class="nav-text">4.3 决策树的生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-决策树的剪枝"><span class="nav-number">4.3.</span> <span class="nav-text">4.4 决策树的剪枝</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-绪论"><span class="nav-number">1.</span> <span class="nav-text">第一章 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-基本术语"><span class="nav-number">1.1.</span> <span class="nav-text">1.2 基本术语</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-模型评估与选择"><span class="nav-number">2.</span> <span class="nav-text">第二章 模型评估与选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-经验误差与过拟合"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 经验误差与过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-评估方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试集的划分方法"><span class="nav-number">2.2.1.</span> <span class="nav-text">测试集的划分方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-性能度量"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-错误率与精度"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 错误率与精度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-查准率、查全率与-F1"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 查准率、查全率与 F1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-ROC与AUC"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 ROC与AUC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-代价敏感错误率与代价曲线"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 代价敏感错误率与代价曲线</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-比较检验"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 比较检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-偏差与方差"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 偏差与方差</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第3章-线性模型"><span class="nav-number">3.</span> <span class="nav-text">第3章 线性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-基本形式"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 基本形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-线性回归"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-对数几率回归"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 对数几率回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-线性判别分析"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 线性判别分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-多分类学习"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 多分类学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多分类"><span class="nav-number">3.5.1.</span> <span class="nav-text">多对多分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-类别不平衡问题"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 类别不平衡问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#“再缩放”-思想"><span class="nav-number">3.6.1.</span> <span class="nav-text">“再缩放” 思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欠采样、过采样思想"><span class="nav-number">3.6.2.</span> <span class="nav-text">欠采样、过采样思想</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第4章-决策树"><span class="nav-number">4.</span> <span class="nav-text">第4章 决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-特征选择（划分选择）"><span class="nav-number">4.1.</span> <span class="nav-text">4.2 特征选择（划分选择）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-决策树的生成"><span class="nav-number">4.2.</span> <span class="nav-text">4.3 决策树的生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-决策树的剪枝"><span class="nav-number">4.3.</span> <span class="nav-text">4.4 决策树的剪枝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-连续与缺失值"><span class="nav-number">4.4.</span> <span class="nav-text">4.5 连续与缺失值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-1-连续值的处理"><span class="nav-number">4.4.1.</span> <span class="nav-text">4.5.1 连续值的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-2-缺失值的处理"><span class="nav-number">4.4.2.</span> <span class="nav-text">4.5.2 缺失值的处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-多变量决策树"><span class="nav-number">4.5.</span> <span class="nav-text">4.6 多变量决策树</span></a></li></ol></li></ol></div>
             
 
           </div>
