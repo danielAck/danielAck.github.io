@@ -129,7 +129,7 @@
 <meta property="og:description" content="对西瓜书的知识点进行一个梳理">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/bias_var.jpg">
-<meta property="og:updated_time" content="2018-05-31T15:57:47.274Z">
+<meta property="og:updated_time" content="2018-07-10T13:24:31.494Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="西瓜书机器学习笔记">
 <meta name="twitter:description" content="对西瓜书的知识点进行一个梳理">
@@ -450,7 +450,7 @@
 <li><p>预测分为两类任务：</p>
 <ul>
 <li><strong>分类任务</strong>： 预测的结果是离散值<ul>
-<li>二分类任务，其中标签为(0 / 1 代表 正例/负例)</li>
+<li>二分类任务，其中标签为(0/1 或者 +1/-1 代表 正例/负例)</li>
 <li>多分类任务，类别数目 k &gt; 2</li>
 </ul>
 </li>
@@ -465,13 +465,13 @@
 <li>使得学习到的模型能够很好的拟合“新数据”，即具有很好的<strong>泛化能力</strong></li>
 </ul>
 </li>
-<li><p>通常假设样本数据服从<strong>独立同分布</strong>（i.i.d）</p>
+<li><p>通常假设样本数据服从<strong>独立同分布</strong>（i.i.d），而服从的<strong>分布是未知的</strong>，我们需要做的就是找出这个分布规律</p>
 </li>
 <li><p><strong>归纳偏好</strong> 可以理解为对不同特征的重视程度</p>
 </li>
 <li><p>任何一个有效的机器学习算法必有相应的<strong>归纳偏好</strong>，因为能够拟合有限数据的曲线并不唯一，因此需要设定归纳偏好，使得泛化能力得到保证</p>
 </li>
-<li><p>通常模型符合 <strong>奥卡姆剃刀</strong> 原则，很遗憾 “简单” 的判断准则针对不同的模型并不唯一，需要借助其他机制才能完成</p>
+<li><p>通常使用 <strong>奥卡姆剃刀</strong> 原则作为一般性的归纳偏好原则，但是很遗憾原则中 “简单” 的含义针对不同的模型并不唯一，需要借助其他机制才能完成判断</p>
 </li>
 <li><p><strong>NFL (No Free Lunch Theorem)</strong> 指出，必须结合具体的学习问题去讨论算法的优劣性</p>
 </li>
@@ -502,7 +502,7 @@
 </ul>
 <p>因此提出不同的评估方法</p>
 <ul>
-<li><p>需要一个 “训练集” ，通过 “训练集” 上的训练误差作为泛化误差的估计</p>
+<li><p>需要一个 “测试集” ，通过 “测试集” 上的测试误差作为泛化误差的估计</p>
 </li>
 <li><p>测试集尽量不在训练集中出现，即二者尽量互斥</p>
 </li>
@@ -510,7 +510,7 @@
 <h4 id="测试集的划分方法"><a href="#测试集的划分方法" class="headerlink" title="测试集的划分方法"></a>测试集的划分方法</h4><ol>
 <li><p>留出法</p>
 <p> 将数据集划分为两个互斥的集合，同时保留类别比例(即进行分层抽样)</p>
-<p> 一般采用若干次随机划分、重复进行后取平均值作为最终结果</p>
+<p> 一般采用确定分层比例后，在层的大小内进行若干次随机划分、重复进行后取平均值作为最终结果</p>
 </li>
 <li><p>交叉验证法</p>
 <p> 与留出法相似，将数据集A分为 k 个互斥的集合</p>
@@ -596,8 +596,10 @@
 <li>绘制步骤<ul>
 <li>对每个测试样例进行预测，得到预测结果</li>
 <li>对预测结果进行排序</li>
-<li>将分类阈值一次设置为每一个预测结果（即将每个样例设置为正例）</li>
+<li>将分类阈值一次设置为每一个预测值即将每个样例设置为正例）</li>
 <li>设置好阈值之后，循环其他样例，若样例为真正例，则纵坐标加<script type="math/tex">1 \over m^+</script></li>
+<li>AUC中坐标 x 代表 <strong>该点之前的反例所占比</strong>，因为每遇到一个反例横坐标扩大一个百分点（$1 \over m^-），同理，y 代表 <strong>该点之前的正例所占比</strong></li>
+<li>AUC的范围是 <strong>[0.5, 1]</strong></li>
 </ul>
 </li>
 </ul>
@@ -818,7 +820,7 @@
   <p><span>本文标题:</span><a href="/2018/05/22/机器学习笔记/">西瓜书机器学习笔记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
   <p><span>发布时间:</span>2018年05月22日 - 20:05</p>
-  <p><span>最后更新:</span>2018年05月31日 - 23:05</p>
+  <p><span>最后更新:</span>2018年07月10日 - 21:07</p>
   <p><span>原始链接:</span><a href="/2018/05/22/机器学习笔记/" title="西瓜书机器学习笔记">https://danielack.github.io/2018/05/22/机器学习笔记/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/22/机器学习笔记/"  aria-label="复制成功！"></i></span>
   </p>
