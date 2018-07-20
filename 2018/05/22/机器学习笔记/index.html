@@ -133,7 +133,7 @@
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/KKT_2.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/hinge_loss_def.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/%E5%90%88%E9%A1%B5%E6%8D%9F%E5%A4%B1.png">
-<meta property="og:updated_time" content="2018-07-18T14:30:54.106Z">
+<meta property="og:updated_time" content="2018-07-20T16:40:36.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="西瓜书机器学习笔记">
 <meta name="twitter:description" content="对西瓜书的知识点进行一个梳理">
@@ -681,6 +681,7 @@
 <script type="math/tex; mode=display">MSE = \sum_{i=1}^{m}{(f(x_i) - y_i)}^2 = \sum_{i=1}^{m}{(\omega x_i + b - y_i)}^2</script><p>求解方法：</p>
 <ul>
 <li>最小二乘法 - 找到一条直线使所有的样本到直线的欧氏距离最小</li>
+<li>最大似然估计 - 求出使所有出现的结果值的概率最大的概率模型参数</li>
 </ul>
 <h3 id="3-3-对数几率回归"><a href="#3-3-对数几率回归" class="headerlink" title="3.3 对数几率回归"></a>3.3 对数几率回归</h3><p>也叫逻辑回归（Logistic Regression），虽然叫回归，但是其实是 <strong>分类</strong> 算法</p>
 <p>起源</p>
@@ -755,6 +756,16 @@
 <li>增加数据集的数目，使得所有类别的数据相同</li>
 <li>需要注意增加数据集的方法，单纯的 <strong>重复采样</strong> 会导致严重的 <strong>过拟合</strong></li>
 <li>代表算法： SMOTE</li>
+</ul>
+<h3 id="3-7-相关思考"><a href="#3-7-相关思考" class="headerlink" title="3.7 相关思考"></a>3.7 相关思考</h3><ul>
+<li><p><strong>线性回归推导中的最小二乘和极大似然的关系</strong></p>
+<ul>
+<li><p>是因为极大似然中假设 <strong>误差服从正态分布</strong> 所以才会有推导结果与最小二乘是一样的，正态分布中刚好有二次项</p>
+</li>
+<li><p>另一种说法是最小二乘选择使用平方的原因是推导极大似然的推导结果就是最小二乘，所以说最小二乘是极大似然估计的结果</p>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="第4章-决策树"><a href="#第4章-决策树" class="headerlink" title="第4章 决策树"></a>第4章 决策树</h2><h3 id="4-1-决策树模型与学习"><a href="#4-1-决策树模型与学习" class="headerlink" title="4.1 决策树模型与学习"></a>4.1 决策树模型与学习</h3><p><strong>优点</strong></p>
 <ul>
@@ -1013,23 +1024,23 @@ l_\epsilon(z) =
 </ul>
 </li>
 </ul>
-<script type="math/tex; mode=display">f(x_i) - y_i \leq \epsilon + \xi_i, 上侧</script><script type="math/tex; mode=display">y_i - f(x_i) \leq \epsilon + \hat{\xi_i}, 下侧</script><h3 id="6-5-核函数"><a href="#6-5-核函数" class="headerlink" title="6.5 核函数"></a>6.5 核函数</h3><h4 id="6-5-1-核技巧"><a href="#6-5-1-核技巧" class="headerlink" title="6.5.1 核技巧"></a>6.5.1 核技巧</h4><p>非线性分类问题</p>
+<script type="math/tex; mode=display">f(x_i) - y_i \leq \epsilon + \xi_i, 上侧</script><script type="math/tex; mode=display">y_i - f(x_i) \leq \epsilon + \hat{\xi_i}, 下侧</script><h3 id="6-5-核函数"><a href="#6-5-核函数" class="headerlink" title="6.5 核函数"></a>6.5 核函数</h3><h4 id="6-5-1-核技巧"><a href="#6-5-1-核技巧" class="headerlink" title="6.5.1 核技巧"></a>6.5.1 核技巧</h4><p><strong>非线性分类问题</strong></p>
 <ul>
 <li>对于不能线性分类的数据，也就不能用一个超平面将数据分开，但如果能用一个 <strong>超曲面</strong> 将数据集分开，那么这个问题就是一个非线性可分问题</li>
 <li>注意：是 <strong>非线性的</strong> 但是是 <strong>可分的问题</strong></li>
 </ul>
-<p>求解思想</p>
+<p><strong>求解思想</strong></p>
 <ul>
 <li>使用一个变换将原空间的数据映射到新空间，而这个新空间也就是 <strong>特征空间</strong></li>
 <li>在 <strong>新空间\特征空间</strong> 上用 <strong>线性分类的学习方法</strong> 学习分类模型</li>
 </ul>
-<p>核函数定义</p>
+<p><strong>核函数定义</strong></p>
 <script type="math/tex; mode=display">K(x,z) = \phi(x)*\phi(z)</script><p>其中，<script type="math/tex">\phi{x}</script> 为 <strong>映射函数</strong></p>
-<p>表示定理</p>
+<p><strong>表示定理</strong></p>
 <ul>
 <li>对于一般的损失函数和正则化项，优化问题都能表示为核函数的线性组合</li>
 </ul>
-<script type="math/tex; mode=display">h^*(x) = \sum_{i=1}^m\alpha_ik(x,x_i)</script><p>核函数在SVM中的应用</p>
+<script type="math/tex; mode=display">h^*(x) = \sum_{i=1}^m\alpha_ik(x,x_i)</script><p><strong>核函数在SVM中的应用</strong></p>
 <ul>
 <li>将SVM对偶问题中的内积 <script type="math/tex">x_i*x_j</script> 变换为特征空间中的内积 <script type="math/tex">\phi(x_i)*\phi(x_j)</script></li>
 <li>当映射函数是 <strong>非线性函数</strong> 时，学习到的核函数SVM是 <strong>非线性分类模型</strong></li>
@@ -1046,7 +1057,37 @@ l_\epsilon(z) =
 </ul>
 <script type="math/tex; mode=display">指数函数： e^x = \sum_{n=0}^\infty{\frac{x^n}{n!}}</script><p>可以得到：</p>
 <script type="math/tex; mode=display">k(x,y) =  exp(-{\Vert{x}\Vert}^2)exp(-{\Vert{y}\Vert}^2){\sum_{n=0}^\infty}{\frac{(2x^Ty)^n}{n!}}</script><p>可以看出，高斯核其实被展开为无穷项多项式核函数的和，而这其中也包括了无限维的多项式核，因此高斯核会把原始维度映射到无穷多维</p>
-
+<h2 id="第七章-贝叶斯分类器"><a href="#第七章-贝叶斯分类器" class="headerlink" title="第七章 贝叶斯分类器"></a>第七章 贝叶斯分类器</h2><h3 id="7-1-贝叶斯决策论"><a href="#7-1-贝叶斯决策论" class="headerlink" title="7.1 贝叶斯决策论"></a>7.1 贝叶斯决策论</h3><p><strong>概念</strong></p>
+<ul>
+<li>贝叶斯决策论是建立在 <strong>概率</strong> 和 <strong>损失</strong> 之上的,以概率为基石辅以损失函数</li>
+</ul>
+<p>二者结合形成了在样本上的 <strong>“条件风险”</strong> 函数</p>
+<script type="math/tex; mode=display">R(c_i|x) = \sum_{j=1}^N\lambda_{ij}P(c_j|x)</script><p>$\lambda_{ij}$ 是将真实标记为 $c_j$ 的标记预测为 $c_i$ 的损失，可以为任意的损失函数</p>
+<p>$P(c_i|x)$ 是 <strong>可从数据中获得</strong> 样本分类为 $c_i$ 的 <strong>后验概率</strong></p>
+<p>我们需要找到一个判定准则 <script type="math/tex">h</script> , 来 <strong>最小化总体风险</strong>, 即 使得预测结果类 <script type="math/tex">c^*</script> 是使得上面提到的损失最小的类 <script type="math/tex">c</script></p>
+<p>因此最优的判定准则为：</p>
+<script type="math/tex; mode=display">h(x^*) = \mathop{argmin}_{c\in{Y}}R(c|x)</script><p>现在，就我们就只需要考虑如何求得所有的 <script type="math/tex">R(c|x)</script>, 当损失函数是 <strong>0-1损失</strong> 时有：</p>
+<script type="math/tex; mode=display">R(c|x) = 1 - P(c|x)</script><p><strong>注意！ 上式只在 损失函数 是 0-1损失 时成立！！！</strong></p>
+<p>于是，我们可以得到<strong>贝叶斯最优分类器</strong>：</p>
+<script type="math/tex; mode=display">h^*(x) = \mathop{argmax}_{c\in{Y}}P(c|x)</script><p><strong>后验概率的求解</strong></p>
+<p>现在的任务变为了求解 <script type="math/tex">P(c|x)</script>, 主要有 <strong>判别式模型</strong> 和 <strong>生成式模型</strong></p>
+<ul>
+<li>生成式模型<ul>
+<li>通过直接建立模型来预测 c</li>
+<li>代表：决策树、BP神经网络、支持向量机</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>判别式模型<ul>
+<li>通过对概率分布 <script type="math/tex">P(c|x)</script> 建模</li>
+<li>代表： 贝叶斯模型</li>
+<li>求解公式,基于贝叶斯公式：</li>
+</ul>
+</li>
+</ul>
+<script type="math/tex; mode=display">P(c|x) = \frac{P(c)P(x|c)}{P(x)}</script><p>而对于所有的训练数据，<script type="math/tex">P(x)</script> 是相同的，不影响求解最优，由此，贝叶斯最优分类器的公式可以更改为：</p>
+<script type="math/tex; mode=display">h^*(x) = \mathop{argmax}_{c\in{Y}}P(c)P(x|c)</script><h3 id="7-2-极大似然估计"><a href="#7-2-极大似然估计" class="headerlink" title="7.2 极大似然估计"></a>7.2 极大似然估计</h3>
       
     </div>
     
@@ -1065,7 +1106,7 @@ l_\epsilon(z) =
   <p><span>本文标题:</span><a href="/2018/05/22/机器学习笔记/">西瓜书机器学习笔记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
   <p><span>发布时间:</span>2018年05月22日 - 20:05</p>
-  <p><span>最后更新:</span>2018年07月18日 - 22:07</p>
+  <p><span>最后更新:</span>2018年07月21日 - 00:07</p>
   <p><span>原始链接:</span><a href="/2018/05/22/机器学习笔记/" title="西瓜书机器学习笔记">https://danielack.github.io/2018/05/22/机器学习笔记/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/22/机器学习笔记/"  aria-label="复制成功！"></i></span>
   </p>
@@ -1313,7 +1354,7 @@ l_\epsilon(z) =
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-绪论"><span class="nav-number">1.</span> <span class="nav-text">第一章 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-基本术语"><span class="nav-number">1.1.</span> <span class="nav-text">1.2 基本术语</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-模型评估与选择"><span class="nav-number">2.</span> <span class="nav-text">第二章 模型评估与选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-经验误差与过拟合"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 经验误差与过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-评估方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试集的划分方法"><span class="nav-number">2.2.1.</span> <span class="nav-text">测试集的划分方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-性能度量"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-错误率与精度"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 错误率与精度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-查准率、查全率与-F1"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 查准率、查全率与 F1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-ROC与AUC"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 ROC与AUC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-代价敏感错误率与代价曲线"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 代价敏感错误率与代价曲线</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-比较检验"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 比较检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-偏差与方差"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 偏差与方差</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第3章-线性模型"><span class="nav-number">3.</span> <span class="nav-text">第3章 线性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-基本形式"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 基本形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-线性回归"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-对数几率回归"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 对数几率回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-线性判别分析"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 线性判别分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-多分类学习"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 多分类学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多分类"><span class="nav-number">3.5.1.</span> <span class="nav-text">多对多分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-类别不平衡问题"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 类别不平衡问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#“再缩放”-思想"><span class="nav-number">3.6.1.</span> <span class="nav-text">“再缩放” 思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欠采样、过采样思想"><span class="nav-number">3.6.2.</span> <span class="nav-text">欠采样、过采样思想</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第4章-决策树"><span class="nav-number">4.</span> <span class="nav-text">第4章 决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-决策树模型与学习"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 决策树模型与学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-特征选择（划分选择）"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 特征选择（划分选择）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-决策树的生成"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 决策树的生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-决策树的剪枝"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 决策树的剪枝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-连续与缺失值"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 连续与缺失值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-1-连续值的处理"><span class="nav-number">4.5.1.</span> <span class="nav-text">4.5.1 连续值的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-2-缺失值的处理"><span class="nav-number">4.5.2.</span> <span class="nav-text">4.5.2 缺失值的处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-多变量决策树"><span class="nav-number">4.6.</span> <span class="nav-text">4.6 多变量决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-习题思考"><span class="nav-number">4.7.</span> <span class="nav-text">4.7 习题思考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第5章-神经网络"><span class="nav-number">5.</span> <span class="nav-text">第5章 神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第6章-支持向量机"><span class="nav-number">6.</span> <span class="nav-text">第6章 支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-概念"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-线性可分支持向量机"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 线性可分支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-1-函数间隔和几何间隔"><span class="nav-number">6.2.1.</span> <span class="nav-text">6.2.1 函数间隔和几何间隔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-2-间隔最大化"><span class="nav-number">6.2.2.</span> <span class="nav-text">6.2.2 间隔最大化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-3-学习的对偶算法"><span class="nav-number">6.2.3.</span> <span class="nav-text">6.2.3 学习的对偶算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-线性支持向量机与软间隔最大化"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 线性支持向量机与软间隔最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-1-线性支持向量机"><span class="nav-number">6.3.1.</span> <span class="nav-text">6.3.1 线性支持向量机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-2-支持向量"><span class="nav-number">6.3.2.</span> <span class="nav-text">6.3.2 支持向量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-3-合页损失函数"><span class="nav-number">6.3.3.</span> <span class="nav-text">6.3.3 合页损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-支持向量回归"><span class="nav-number">6.4.</span> <span class="nav-text">6.4 支持向量回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-核函数"><span class="nav-number">6.5.</span> <span class="nav-text">6.5 核函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-1-核技巧"><span class="nav-number">6.5.1.</span> <span class="nav-text">6.5.1 核技巧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-习题思考"><span class="nav-number">6.6.</span> <span class="nav-text">6.6 习题思考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-绪论"><span class="nav-number">1.</span> <span class="nav-text">第一章 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-基本术语"><span class="nav-number">1.1.</span> <span class="nav-text">1.2 基本术语</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-模型评估与选择"><span class="nav-number">2.</span> <span class="nav-text">第二章 模型评估与选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-经验误差与过拟合"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 经验误差与过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-评估方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试集的划分方法"><span class="nav-number">2.2.1.</span> <span class="nav-text">测试集的划分方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-性能度量"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-错误率与精度"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 错误率与精度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-查准率、查全率与-F1"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 查准率、查全率与 F1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-ROC与AUC"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 ROC与AUC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-代价敏感错误率与代价曲线"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 代价敏感错误率与代价曲线</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-比较检验"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 比较检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-偏差与方差"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 偏差与方差</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第3章-线性模型"><span class="nav-number">3.</span> <span class="nav-text">第3章 线性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-基本形式"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 基本形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-线性回归"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-对数几率回归"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 对数几率回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-线性判别分析"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 线性判别分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-多分类学习"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 多分类学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多分类"><span class="nav-number">3.5.1.</span> <span class="nav-text">多对多分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-类别不平衡问题"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 类别不平衡问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#“再缩放”-思想"><span class="nav-number">3.6.1.</span> <span class="nav-text">“再缩放” 思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欠采样、过采样思想"><span class="nav-number">3.6.2.</span> <span class="nav-text">欠采样、过采样思想</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-相关思考"><span class="nav-number">3.7.</span> <span class="nav-text">3.7 相关思考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第4章-决策树"><span class="nav-number">4.</span> <span class="nav-text">第4章 决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-决策树模型与学习"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 决策树模型与学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-特征选择（划分选择）"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 特征选择（划分选择）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-决策树的生成"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 决策树的生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-决策树的剪枝"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 决策树的剪枝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-连续与缺失值"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 连续与缺失值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-1-连续值的处理"><span class="nav-number">4.5.1.</span> <span class="nav-text">4.5.1 连续值的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-2-缺失值的处理"><span class="nav-number">4.5.2.</span> <span class="nav-text">4.5.2 缺失值的处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-多变量决策树"><span class="nav-number">4.6.</span> <span class="nav-text">4.6 多变量决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-习题思考"><span class="nav-number">4.7.</span> <span class="nav-text">4.7 习题思考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第5章-神经网络"><span class="nav-number">5.</span> <span class="nav-text">第5章 神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第6章-支持向量机"><span class="nav-number">6.</span> <span class="nav-text">第6章 支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-概念"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-线性可分支持向量机"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 线性可分支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-1-函数间隔和几何间隔"><span class="nav-number">6.2.1.</span> <span class="nav-text">6.2.1 函数间隔和几何间隔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-2-间隔最大化"><span class="nav-number">6.2.2.</span> <span class="nav-text">6.2.2 间隔最大化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-3-学习的对偶算法"><span class="nav-number">6.2.3.</span> <span class="nav-text">6.2.3 学习的对偶算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-线性支持向量机与软间隔最大化"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 线性支持向量机与软间隔最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-1-线性支持向量机"><span class="nav-number">6.3.1.</span> <span class="nav-text">6.3.1 线性支持向量机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-2-支持向量"><span class="nav-number">6.3.2.</span> <span class="nav-text">6.3.2 支持向量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-3-合页损失函数"><span class="nav-number">6.3.3.</span> <span class="nav-text">6.3.3 合页损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-支持向量回归"><span class="nav-number">6.4.</span> <span class="nav-text">6.4 支持向量回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-核函数"><span class="nav-number">6.5.</span> <span class="nav-text">6.5 核函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-1-核技巧"><span class="nav-number">6.5.1.</span> <span class="nav-text">6.5.1 核技巧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-习题思考"><span class="nav-number">6.6.</span> <span class="nav-text">6.6 习题思考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第七章-贝叶斯分类器"><span class="nav-number">7.</span> <span class="nav-text">第七章 贝叶斯分类器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-贝叶斯决策论"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 贝叶斯决策论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-极大似然估计"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 极大似然估计</span></a></li></ol></li></ol></div>
             
 
           </div>
