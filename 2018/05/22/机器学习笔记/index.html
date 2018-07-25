@@ -138,7 +138,7 @@
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/gbdt_logloss.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/gbdt_regression.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/gbdt_classification.png">
-<meta property="og:updated_time" content="2018-07-25T14:30:27.904Z">
+<meta property="og:updated_time" content="2018-07-25T14:37:54.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习笔记">
 <meta name="twitter:description" content="以西瓜书为主线，以其他书籍作为参考进行补充，例如《统计学习方法》，《PRML》等">
@@ -1309,7 +1309,8 @@ l_\epsilon(z) =
 </ul>
 <h4 id="Shrinkage"><a href="#Shrinkage" class="headerlink" title="Shrinkage"></a>Shrinkage</h4><p>同时GDBT还使用了 <strong>shrinkage</strong> 的方法</p>
 <p>即每一次训练出 对残差的拟合的回归树的时候，我们再乘上一个系数 $\mu$, 意味着每一次我们只学习残差的一小部分</p>
-<p>在GBDT的原文中指出，每次一小步一小步的学习有足够的信心比一大步一大步的学习更不容易过拟合</p>
+<p>在GBDT的原文中指出，每次一小步一小步的学习有足够的信心比一大步一大步的学习更容易避免过拟合</p>
+<p>即Shrinkage仍然以残差作为学习目标，但对于残差学习出来的结果，只累加一小部分（step*残差）逐步逼近目标，step一般都比较小，如0.01~0.001（注意该step 不是 gradient的step），导致各个树的残差是渐变的而不是陡变的。直觉上这也很好理解，不像直接用残差一步修复误差，而是只修复一点点，其实就是把大步切成了很多小步。本质上，Shrinkage为每棵树设置了一个weight，累加时要乘以这个weight，但和Gradient并没有关系。这个weight就是step。就像Adaboost一样，Shrinkage能减少过拟合发生也是经验证明的，目前还没有看到从理论的证明。</p>
 <h3 id="Bagging方法"><a href="#Bagging方法" class="headerlink" title="Bagging方法"></a>Bagging方法</h3><h4 id="基础的-Bagging-方法"><a href="#基础的-Bagging-方法" class="headerlink" title="基础的 Bagging 方法"></a>基础的 Bagging 方法</h4><p><strong>核心思想</strong></p>
 <p>使用 <strong>自助采样法</strong> 获得初始训练集中约 63.2% 的样本，如此重复M次采样，获得M个不同的数据集，根据这M个不同的数据集分别训练出M个不同的分类器</p>
 <p><strong>结合算法</strong></p>
