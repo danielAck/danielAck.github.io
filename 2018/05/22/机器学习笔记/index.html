@@ -141,7 +141,7 @@
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/gdbt_multiclassification.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/xgboost_gain.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/xgboost_local_global.png">
-<meta property="og:updated_time" content="2018-07-30T14:45:22.613Z">
+<meta property="og:updated_time" content="2018-07-31T05:18:39.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习笔记">
 <meta name="twitter:description" content="以西瓜书为主线，以其他书籍作为参考进行补充，例如《统计学习方法》，《PRML》等">
@@ -608,12 +608,12 @@
 <li><strong>AUC</strong> - 曲线下面积</li>
 <li>面积的大小代表预测的准确性</li>
 <li>绘制步骤<ul>
-<li>对每个测试样例进行预测，得到预测结果</li>
-<li>对预测结果进行排序</li>
-<li>将分类阈值一次设置为每一个预测值即将每个样例设置为正例）</li>
-<li>设置好阈值之后，循环其他样例，若样例为真正例，则纵坐标加<script type="math/tex">1 \over m^+</script></li>
+<li>对每个测试样例进行预测，得到预测值</li>
+<li>对预测值进行排序</li>
+<li>按照排序好的数据进行遍历，依次假设当前样例为正例</li>
+<li>若样例为真正例，则纵坐标加<script type="math/tex">1 \over m^+</script>，否则横坐标加<script type="math/tex">1 \over m^+</script></li>
 <li>AUC中坐标 <script type="math/tex">x</script> 代表 <strong>该点之前的反例所占比</strong>，因为每遇到一个反例横坐标扩大一个百分点（<script type="math/tex">1 \over m^-</script>），同理，<script type="math/tex">y</script> 代表 <strong>该点之前的正例所占比</strong></li>
-<li>AUC的范围是 <strong>[0.5, 1]</strong></li>
+<li>正常的AUC的范围是 <strong>[0.5, 1]</strong>，如果AUC的值小于0.5就应该把预测的结果尝试反过来…</li>
 </ul>
 </li>
 </ul>
@@ -840,7 +840,7 @@
 <p>依次对划分空间$R_m$中的每一个样本进行如下的操作：</p>
 <ul>
 <li>依次将当前样本的每一个 特征/属性 值，作为一个切分点$s$，而当前变量就是切分变量$j$</li>
-<li>使用当前切分变量的切分点将当前划分空间$R_m$划分为两个子区域 $R_1=\lbrace{x}|\lbrace{x^{(j)}} \req {s\rbrace\rbrace}$, $R_2={x|{x^{(j)} &gt; s}}$</li>
+<li>使用当前切分变量的切分点将当前划分空间$R_m$划分为两个子区域 $R_1=\lbrace{x}|\lbrace{x^{(j)}} \req {s}\rbrace\rbrace$, $R_2=\lbrace{x}|\lbracex^{(j)} &gt; s\rbrace\rbrace$</li>
 <li>然后计算 $R_1$ 和 $R_2$ 的固定输出值 $c_{1i}$, $c_{2i}$</li>
 <li>计算$c_{1i}$, $c_{2i}$ 下的平方误差和 $r_{js} = r_{js1} + r_{js2}$</li>
 </ul>
@@ -1099,7 +1099,7 @@ l_\epsilon(z) =
 </li>
 </ul>
 <script type="math/tex; mode=display">指数函数： e^x = \sum_{n=0}^\infty{\frac{x^n}{n!}}</script><p>可以得到：</p>
-<script type="math/tex; mode=display">k(x,y) =  exp(-{\Vert{x}\Vert}^2)exp(-{\Vert{y}\Vert}^2){\sum_{n=0}^\infty}{\frac{(2x^Ty)^n}{n!}}</script><p>可以看出，高斯核其实被展开为无穷项多项式核函数的和，而这其中也包括了无限维的多项式核，因此高斯核会把原始维度映射到无穷多维</p>
+<script type="math/tex; mode=display">k(x,y) =  exp(-{\Vert{x}\Vert}^2)exp(-{\Vert{y}\Vert}^2){\sum_{n=0}^\infty}{\frac{(2x^Ty)^n}{n!}}</script><p>可以看出，高斯核其实被展开为无穷项多项式核函数的和，而这其中也包括了无限维的多项式核($n$ 可以取到 $\infty$)，因此高斯核会把原始维度映射到无穷多维</p>
 <h2 id="第七章-贝叶斯分类器"><a href="#第七章-贝叶斯分类器" class="headerlink" title="第七章 贝叶斯分类器"></a>第七章 贝叶斯分类器</h2><h3 id="7-1-贝叶斯决策论"><a href="#7-1-贝叶斯决策论" class="headerlink" title="7.1 贝叶斯决策论"></a>7.1 贝叶斯决策论</h3><p><strong>概念</strong></p>
 <ul>
 <li>贝叶斯决策论是建立在 <strong>概率</strong> 和 <strong>损失</strong> 之上的,以概率为基石辅以损失函数</li>
@@ -1320,6 +1320,7 @@ l_\epsilon(z) =
 </ul>
 </li>
 </ul>
+<p>关于GDBT较为详细的解释：<br><a href="https://blog.csdn.net/molu_chase/article/details/78111148" target="_blank" rel="noopener">https://blog.csdn.net/molu_chase/article/details/78111148</a></p>
 <p><strong>Adaboost 和 GBDT 的区别</strong></p>
 <ul>
 <li>AdaBoost 是通过提升错分数据点的权重来定位模型的不足，</li>
@@ -1525,6 +1526,39 @@ l_\epsilon(z) =
 <p>参考 <a href="https://vimsky.com/article/969.html" target="_blank" rel="noopener">https://vimsky.com/article/969.html</a></p>
 <p><a href="https://www.jianshu.com/p/c9bb6f89cfcc" target="_blank" rel="noopener">https://www.jianshu.com/p/c9bb6f89cfcc</a> (引入拉普拉斯分布和高斯分布)</p>
 <p>有时间回来总结</p>
+<ol>
+<li>为什么基于 tree-ensemble 的机器学习方法，在实际的 kaggle 比赛中效果非常好？</li>
+</ol>
+<p>作者：马超<br>链接：<a href="https://www.zhihu.com/question/51818176/answer/127637712" target="_blank" rel="noopener">https://www.zhihu.com/question/51818176/answer/127637712</a><br>来源：知乎</p>
+<p><strong>只截取了一部分内容，原文如下：</strong></p>
+<p>这是一个非常好，也非常值得思考的问题。<br>换一个方式来问这个问题：为什么基于 tree-ensemble 的机器学习方法，在实际的 kaggle 比赛中效果非常好？</p>
+<p>通常，解释一个机器学习模型的表现是一件很复杂事情，而这篇文章尽可能用最直观的方式来解释这一问题。</p>
+<ol>
+<li><p>理论模型 （站在 vc-dimension 的角度）</p>
+</li>
+<li><p>实际数据</p>
+</li>
+<li><p>系统的实现 （主要基于 xgboost）</p>
+</li>
+</ol>
+<p>通常决定一个机器学习模型能不能取得好的效果，以上三个方面的因素缺一不可。</p>
+<p><strong>（1）站在理论模型的角度统计</strong></p>
+<p>机器学习里经典的 vc-dimension 理论告诉我们：一个机器学习模型想要取得好的效果，这个模型需要满足以下两个条件：</p>
+<ol>
+<li>模型在我们的训练数据上的表现要不错，也就是 trainning error 要足够小。</li>
+<li>模型的 vc-dimension 要低。换句话说，就是模型的自由度不能太大，以防overfit.</li>
+</ol>
+<p>当然，这是我用大白话描述出来的，真正的 vc-dimension 理论需要经过复杂的数学推导，推出 vc-bound. </p>
+<p>vc-dimension 理论其实是从另一个角度刻画了一个我们所熟知的概念，那就是 bias variance trade-off.</p>
+<p>好，现在开始让我们想象一个机器学习任务。对于这个任务，一定会有一个 “上帝函数” 可以完美的拟合所有数据（包括训练数据，以及未知的测试数据）。很可惜，这个函数我们肯定是不知道的 （不然就不需要机器学习了）。</p>
+<p>我们只可能选择一个 “假想函数” 来 逼近 这个 “上帝函数”，我们通常把这个 “假想函数” 叫做 hypothesis.</p>
+<p>在这些 hypothesis 里，我们可以选择 svm, 也可以选择 logistic regression. 可以选择单棵决策树，也可以选择 tree-ensemble (gbdt, random forest).  </p>
+<p>现在的问题就是，为什么 tree-ensemble 在实际中的效果很好呢？区别就在于 “模型的可控性”。</p>
+<p>先说结论，tree-ensemble 这样的模型的可控性是好的，而像 LR  这样的模型的可控性是不够好的（或者说，可控性是没有 tree-ensemble 好的）。为什么会这样？别急，听我慢慢道来。</p>
+<p>我们之前说，当我们选择一个 hypothsis 后，就需要在训练数据上进行训练，从而逼近我们的 “上帝函数”。我们都知道，对于 LR 这样的模型。如果 underfit，我们可以通过加 feature，或者通过高次的特征转换来使得我们的模型在训练数据上取得足够高的正确率。而对于 tree-enseble 来说，我们解决这一问题的方法是通过训练更多的 “弱弱” 的 tree.  所以，这两类模型都可以把 training error 做的足够低，也就是说模型的表达能力都是足够的。</p>
+<p>但是这样就完事了吗？没有，我们还需要让我们的模型的 vc-dimension 低一些。</p>
+<p>而这里，重点来了。在 tree-ensemble 模型中，通过加 tree 的方式，对于模型的 vc-dimension 的改变是比较小的。而在 LR 中，初始的维数设定，或者说特征的高次转换对于 vc-dimension 的影响都是更大的。换句话说，tree-ensemble 总是用一些 “弱弱” 的树联合起来去逼近 “上帝函数”，一次一小步，总能拟合的比较好。而对于 LR 这样的模型，我们很难去猜到这个“上帝函数”到底长什么样子（到底是2次函数还是3次函数？上帝函数如果是介于2次和3次之间怎么办呢？）。</p>
+<p>所以，一不小心我们设定的多项式维数高了，模型就 “刹不住车了”。俗话说的好，步子大了，总会扯着蛋。这也就是我们之前说的，tree-ensemble 模型的可控性更好，也即更不容易 overfit.</p>
 
       
     </div>
@@ -1544,7 +1578,7 @@ l_\epsilon(z) =
   <p><span>本文标题:</span><a href="/2018/05/22/机器学习笔记/">机器学习笔记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
   <p><span>发布时间:</span>2018年05月22日 - 20:05</p>
-  <p><span>最后更新:</span>2018年07月30日 - 22:07</p>
+  <p><span>最后更新:</span>2018年07月31日 - 13:07</p>
   <p><span>原始链接:</span><a href="/2018/05/22/机器学习笔记/" title="机器学习笔记">https://danielack.github.io/2018/05/22/机器学习笔记/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/22/机器学习笔记/"  aria-label="复制成功！"></i></span>
   </p>
