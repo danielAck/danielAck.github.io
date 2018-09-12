@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Menlo:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog_favicon_32×32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog_favicon_16×16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="深度学习,目标检测," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="刚刚接触深度学习，以目标检测为入手，本文主要以yolov3的Keras实现为主线，穿插入yolov3的论文思想，也是记录自己的学习过程。">
+<meta name="keywords" content="深度学习,目标检测">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yolov3 Keras实现解读">
+<meta property="og:url" content="https://danielack.github.io/2018/08/25/yolov3Keras实现解读/index.html">
+<meta property="og:site_name" content="Daniel_Codezone">
+<meta property="og:description" content="刚刚接触深度学习，以目标检测为入手，本文主要以yolov3的Keras实现为主线，穿插入yolov3的论文思想，也是记录自己的学习过程。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/yolo_image.png">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/yolo_image_detection.png">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/detection_result.png">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/YOLOv3network.png">
+<meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/inception.jpg">
+<meta property="og:updated_time" content="2018-09-12T11:23:42.776Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="yolov3 Keras实现解读">
+<meta name="twitter:description" content="刚刚接触深度学习，以目标检测为入手，本文主要以yolov3的Keras实现为主线，穿插入yolov3的论文思想，也是记录自己的学习过程。">
+<meta name="twitter:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/yolo_image.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://danielack.github.io/2018/08/25/yolov3Keras实现解读/"/>
+
+
+
+
+
+  <title>yolov3 Keras实现解读 | Daniel_Codezone</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Daniel_Codezone</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">有志者，事竟成</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://danielack.github.io/2018/08/25/yolov3Keras实现解读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Daniel_柏桦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel_Codezone">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">yolov3 Keras实现解读</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T20:52:43+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/深度学习/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/25/yolov3Keras实现解读/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/25/yolov3Keras实现解读/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/25/yolov3Keras实现解读/" class="leancloud_visitors" data-flag-title="yolov3 Keras实现解读">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count">℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>刚刚接触深度学习，以目标检测为入手，本文主要以yolov3的Keras实现为主线，穿插入yolov3的论文思想，也是记录自己的学习过程。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><ol>
+<li>首先感谢<strong>@qqwweee</strong>以及各位contributors完美的用Keras实现了yolov3，本文也是以此项目进行yolov3的源码解读学习，<strong>repo</strong>：<a href="https://github.com/qqwweee/keras-yolo3" target="_blank" rel="noopener">https://github.com/qqwweee/keras-yolo3</a></li>
+<li>文章内容大部分也是借鉴了<strong>@SpikeKing</strong> 对此源码的解读，讲解的非常详细，本文只是在此之上加入了自己学习过程中的一些想法，大家有兴趣的可以直接阅读，<strong>repo</strong>：<a href="https://github.com/SpikeKing/keras-yolo3-detection" target="_blank" rel="noopener">https://github.com/SpikeKing/keras-yolo3-detection</a></li>
+<li>由于源码比较复杂，作者也只是刚刚接触yolov3，能力有限，所有会有部分内容不能完整的照顾到，如果没有能帮助到您在此表示抱歉。</li>
+</ol>
+<p><strong>阅读建议</strong></p>
+<p>由于整个项目包含了对yolov3的算法的全部实现，主要分为核心算法实现以及使用相关代码实现，所以整体内容较为庞大，建议大家先按照自己的侧重进行阅读。如果侧重 <strong>使用</strong> ：建议从使用章节开始阅读，如果侧重 <strong>算法学习</strong> ：建议从核心算法实现开始阅读。</p>
+<hr>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>我们可以从项目的包结构中对算法实现进行简单的探索：</p>
+<p>├─font<br>├─model_data<br>├─yolo3<br>│  └─<strong>pycache</strong><br>├─yolo.py<br>├─train.py<br>├─yolo_video.py<br>└─<strong>pycache</strong></p>
+<p><strong>font</strong> 目录下包含一些字体，核心实现还是在 <strong>model_data</strong> 和 <strong>yolo3</strong> 这两个文件夹</p>
+<p><strong>model_data</strong> 文件夹中包含了coco数据集和voc数据集的相关说明文件，例如对数据集聚类后生成的anchors文件，数据集的类别说明文件，后期需要使用的 yolo 的权重文件也会放在这</p>
+<p><strong>yolo3</strong> 文件夹中包含了算法实现的核心文件： <strong>model.py</strong> 和 <strong>util.py</strong>， <strong>model.py</strong> 主要实现算法框架，<strong>util.py</strong> 主要封装一些实现需要的功能</p>
+<p><strong>train.py</strong>： 使得可以使用自己的数据集进行训练，其中就用到了核心算法</p>
+<p><strong>yolo.py</strong> 和 <strong>yolo_video.py</strong> : <strong>yolo.py</strong> 实现了主要的使用方面的功能，<strong>yolo_video.py</strong> 是整个项目的使用入口文件，调用了 <strong>yolo.py</strong> 中的相关函数</p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="简单开始"><a href="#简单开始" class="headerlink" title="简单开始"></a>简单开始</h2><h3 id="下载权重文件"><a href="#下载权重文件" class="headerlink" title="下载权重文件"></a>下载权重文件</h3><p>首先模型需要训练好的权重参数才能够进行检测，可以直接下载官方已经训练好的权重参数（貌似是使用coco和voc两个数据集训练出的结果）到项目目录下</p>
+<p>地址：<a href="https://pjreddie.com/media/files/yolov3.weights" target="_blank" rel="noopener">https://pjreddie.com/media/files/yolov3.weights</a></p>
+<p>将 .weights 文件转换为 Keras支持的 h5 权重文件</p>
+<p>在目录下执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python convert.py yolov3.cfg yolov3.weights model_data/yolo.h5</span><br></pre></td></tr></table></figure>
+<h3 id="进行图片检测"><a href="#进行图片检测" class="headerlink" title="进行图片检测"></a>进行图片检测</h3><p>可以在 <a href="https://github.com/AlexeyAB/darknet/tree/master/data" target="_blank" rel="noopener">https://github.com/AlexeyAB/darknet/tree/master/data</a> 中下载你喜欢的测试图片到项目目录下，当然也可以使用自己的图片</p>
+<p>执行：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python yolo_video.py --image</span><br></pre></td></tr></table></figure></p>
+<p>之后会要求输入需要检测的图片名称，输入图片名称之后就会出现检测结果：</p>
+<p><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/yolo_image.png" alt=""></p>
+<p><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/yolo_image_detection.png" alt=""></p>
+<p><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/detection_result.png" alt=""></p>
+<h3 id="利用摄像头进行视频检测"><a href="#利用摄像头进行视频检测" class="headerlink" title="利用摄像头进行视频检测"></a>利用摄像头进行视频检测</h3><p>进行视频检测首先需要 CUDA 9.0+, h5py 以及 OpenCV3.x 的支持，使用 Anaconda 就可以轻松安装</p>
+<p>同样在项目目录下执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python yolo_video.py</span><br></pre></td></tr></table></figure>
+<p>就可以利用摄像头进行视频检测，也可以加上 <code>--input</code> 参数变为视频检测，参数内容就是要检测的视频文件目录</p>
+<h3 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h3><h4 id="yolo-video-py"><a href="#yolo-video-py" class="headerlink" title="yolo_video.py"></a>yolo_video.py</h4><p>命令行参数：</p>
+<p><code>--image</code> 进入图片检测模式</p>
+<p><code>--model</code> 指定权重文件的位置，默认是 model_data/yolo.h5</p>
+<p><code>--anchors</code> 指定anchors文件位置，默认是 model_data/yolo_anchors.txt</p>
+<p><code>--classes_path</code> 指定类别文件位置, 默认是 model_data/coco_classes.txt</p>
+<h4 id="yolo-py"><a href="#yolo-py" class="headerlink" title="yolo.py"></a>yolo.py</h4><p>主要实现对图片中物体的检测以及得分和框的绘制</p>
+<p><strong>generate(self)</strong></p>
+<ul>
+<li>加载权重参数文件，生成检测框，得分，以及对应类别</li>
+<li>利用 <strong>model.py</strong> 中的 <strong>yolo_eval</strong> 函数生成检测框，得分，所属类别</li>
+<li>初始化时调用generate函数生成图片的检测框，得分，所属类别（self.boxes, self.scores, self.classes）</li>
+</ul>
+<p><strong>detect_image(self, image)</strong></p>
+<ul>
+<li>要求进行检测的图片尺寸大小是 <strong>32</strong> 的倍数，原因:<ul>
+<li>在网络中，执行的是 <strong>5次步长为2</strong> 的卷积操作，即 <script type="math/tex">2^5=32</script></li>
+</ul>
+</li>
+<li>图片的默认尺寸是416 x 416,因为在最底层中的特征图（Feature Map）大小是13，所以 13 * 32 = 416</li>
+</ul>
+<p><strong>注意：</strong><br>特征图和卷积核不是一个概念，特征图是指图片在进行卷积等一系列操作之后最终得到的图片，一开始喂给网络的图片也可以称作是特征图，特征图之后也会作为下一层网络的输入<br>，<br>5次步长为2的卷积操作源码：</p>
+<p>位置：keras-yolo3-master\keras-yolo3-master\yolo3\model.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = compose(</span><br><span class="line">           DarknetConv2D_BN_Leaky(num_filters, (<span class="number">1</span>,<span class="number">1</span>)),</span><br><span class="line">           DarknetConv2D_BN_Leaky(num_filters*<span class="number">2</span>, (<span class="number">3</span>,<span class="number">3</span>)),</span><br><span class="line">           DarknetConv2D_BN_Leaky(num_filters, (<span class="number">1</span>,<span class="number">1</span>)),</span><br><span class="line">           DarknetConv2D_BN_Leaky(num_filters*<span class="number">2</span>, (<span class="number">3</span>,<span class="number">3</span>)),</span><br><span class="line">           DarknetConv2D_BN_Leaky(num_filters, (<span class="number">1</span>,<span class="number">1</span>)))(x)</span><br></pre></td></tr></table></figure>
+<p><strong>detect_video</strong></p>
+<ul>
+<li>实现视频检测和通过摄像头实时检测的功能，利用到了OpenCV</li>
+</ul>
+<h2 id="使用自己的训练集"><a href="#使用自己的训练集" class="headerlink" title="使用自己的训练集"></a>使用自己的训练集</h2><p>通过使用提供的 <strong>train.py</strong> 可以使用自己的数据集进行训练得到权重文件，从而使用自己的数据集进行检测工作</p>
+<p>为了更方便的训练，我已经把相关的训练脚本代码放到了github上面，有兴趣的同学可以用来跑跑自己的训练集试一试，当然也可以使用原作者的 <strong>train.py</strong> 来训练,如果使用 <strong>train.py</strong> 可以参考 <strong>train.py 解读</strong></p>
+<p>go right ahead ~</p>
+<h3 id="train-py-解读"><a href="#train-py-解读" class="headerlink" title="train.py 解读"></a>train.py 解读</h3><p>训练需要指定</p>
+<ul>
+<li>训练数据集的标注文本</li>
+<li>权重文件、训练日志输出路径：log_dir</li>
+<li>类别说明文件</li>
+<li>聚类好的anchors文件</li>
+</ul>
+<p>创建模型的时候，默认会预加载 model_data 文件夹下的权重文件</p>
+<p>默认将输入的训练图片转变为 input_shape(默认：416 x 416) 的格式<br>具体转变的过程我看的也不是很明白，但输出一定是 input_shape 的格式，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件路径：./yolo3/utils.py get_random_data函数中</span></span><br><span class="line"><span class="comment"># resize image</span></span><br><span class="line">   new_ar = w/h * rand(<span class="number">1</span>-jitter,<span class="number">1</span>+jitter)/rand(<span class="number">1</span>-jitter,<span class="number">1</span>+jitter)</span><br><span class="line">   scale = rand(<span class="number">.25</span>, <span class="number">2</span>)</span><br><span class="line">   <span class="keyword">if</span> new_ar &lt; <span class="number">1</span>:</span><br><span class="line">       nh = int(scale*h)</span><br><span class="line">       nw = int(nh*new_ar)</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">       nw = int(scale*w)</span><br><span class="line">       nh = int(nw/new_ar)</span><br><span class="line">   image = image.resize((nw,nh), Image.BICUBIC)</span><br><span class="line"></span><br><span class="line">   <span class="comment"># place image</span></span><br><span class="line">   dx = int(rand(<span class="number">0</span>, w-nw))</span><br><span class="line">   dy = int(rand(<span class="number">0</span>, h-nh))</span><br><span class="line">   new_image = Image.new(<span class="string">'RGB'</span>, (w,h), (<span class="number">128</span>,<span class="number">128</span>,<span class="number">128</span>))</span><br><span class="line">   new_image.paste(image, (dx, dy))</span><br><span class="line">   image = new_image</span><br><span class="line"></span><br><span class="line">   <span class="comment"># flip image or not</span></span><br><span class="line">   flip = rand()&lt;<span class="number">.5</span></span><br><span class="line">   <span class="keyword">if</span> flip: image = image.transpose(Image.FLIP_LEFT_RIGHT)</span><br><span class="line"></span><br><span class="line">   <span class="comment"># distort image</span></span><br><span class="line">   hue = rand(-hue, hue)</span><br><span class="line">   sat = rand(<span class="number">1</span>, sat) <span class="keyword">if</span> rand()&lt;<span class="number">.5</span> <span class="keyword">else</span> <span class="number">1</span>/rand(<span class="number">1</span>, sat)</span><br><span class="line">   val = rand(<span class="number">1</span>, val) <span class="keyword">if</span> rand()&lt;<span class="number">.5</span> <span class="keyword">else</span> <span class="number">1</span>/rand(<span class="number">1</span>, val)</span><br><span class="line">   x = rgb_to_hsv(np.array(image)/<span class="number">255.</span>)</span><br><span class="line">   x[..., <span class="number">0</span>] += hue</span><br><span class="line">   x[..., <span class="number">0</span>][x[..., <span class="number">0</span>]&gt;<span class="number">1</span>] -= <span class="number">1</span></span><br><span class="line">   x[..., <span class="number">0</span>][x[..., <span class="number">0</span>]&lt;<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">   x[..., <span class="number">1</span>] *= sat</span><br><span class="line">   x[..., <span class="number">2</span>] *= val</span><br><span class="line">   x[x&gt;<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">   x[x&lt;<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">   image_data = hsv_to_rgb(x) <span class="comment"># numpy array, 0 to 1</span></span><br></pre></td></tr></table></figure>
+<p>然后将训练的数据进行打乱(shuffle),交叉验证的默认比例是 10%</p>
+<p>第一个阶段只训练最后的3个输出层  </p>
+<p>第二个阶段使用第一阶段的权重参数，继续训练所有的网络，进行权重的微调</p>
+<ul>
+<li>将学习率从 1e-3 减少为 1e-4</li>
+</ul>
+<p>==================================</p>
+<h1 id="核心算法实现"><a href="#核心算法实现" class="headerlink" title="核心算法实现"></a>核心算法实现</h1><h2 id="model-py-解读"><a href="#model-py-解读" class="headerlink" title="model.py 解读"></a>model.py 解读</h2><p>model.py 是整个项目的核心，也是对yolo论文的复现，在 model.py 中定义了底层框架，实现了darknet框架（darknet_body），最后实现最终的yolo框架（yolo_body）</p>
+<h3 id="底层框架"><a href="#底层框架" class="headerlink" title="底层框架"></a>底层框架</h3><p><strong>DarknetConv2D(*args, **kwargs)</strong></p>
+<p>yolo是使用卷积神经网络进行训练，DarknetConv2D用来设置Darknet网络的参数，卷积神经网络用的是Keras的Conv2D</p>
+<ul>
+<li>kernel_regularizer：使用l2正则化 = l2(5e-4)</li>
+<li>如果指定步长strides = (2,2) padding使用valid模式，否则使用same模式</li>
+</ul>
+<p><strong>DarknetConv2D_BN_Leaky(*args, **kwargs)</strong></p>
+<p>默认不适用bias：’use_bias’: False<br>然后使用 util包中的 <strong>compose函数</strong> 在卷积之后进行BatchNormalization和LeakyReLU，将这些步骤封装成一个函数</p>
+<p><strong>resblock_body(x, num_filters, num_blocks)</strong></p>
+<p>在yolo中还用到了残差网络，加入了residual blocks的思想，在yolo3的darknet网络架构图中，被一个框框起来的两个卷积网络+一个残差训练就是一个<strong>resblock_body</strong>，利用 <strong>resblock_body</strong>，可以搭建出darknet框架</p>
+<p>源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''A series of resblocks starting with a downsampling Convolution2D'''</span></span><br><span class="line">    <span class="comment"># Darknet uses left and top padding instead of 'same' mode</span></span><br><span class="line">    x = ZeroPadding2D(((<span class="number">1</span>,<span class="number">0</span>),(<span class="number">1</span>,<span class="number">0</span>)))(x)</span><br><span class="line">	<span class="comment"># 进行步长为 2 的卷积操作</span></span><br><span class="line">    x = DarknetConv2D_BN_Leaky(num_filters, (<span class="number">3</span>,<span class="number">3</span>), strides=(<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_blocks):</span><br><span class="line">        y = compose(</span><br><span class="line">                DarknetConv2D_BN_Leaky(num_filters//<span class="number">2</span>, (<span class="number">1</span>,<span class="number">1</span>)),</span><br><span class="line">                DarknetConv2D_BN_Leaky(num_filters, (<span class="number">3</span>,<span class="number">3</span>)))(x)</span><br><span class="line">        x = Add()([x,y])</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure></p>
+<h3 id="darknet框架"><a href="#darknet框架" class="headerlink" title="darknet框架"></a>darknet框架</h3><p>使用了<strong>resblock_body</strong>按照如图所示的框架搭建<br><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/YOLOv3network.png" alt=""></p>
+<p>源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''Darknent body having 52 Convolution2D layers'''</span></span><br><span class="line">    x = DarknetConv2D_BN_Leaky(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>))(x)</span><br><span class="line">    x = resblock_body(x, <span class="number">64</span>, <span class="number">1</span>)</span><br><span class="line">    x = resblock_body(x, <span class="number">128</span>, <span class="number">2</span>)</span><br><span class="line">    x = resblock_body(x, <span class="number">256</span>, <span class="number">8</span>)</span><br><span class="line">    x = resblock_body(x, <span class="number">512</span>, <span class="number">8</span>)</span><br><span class="line">    x = resblock_body(x, <span class="number">1024</span>, <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure></p>
+<p>由于每一次 <strong>resblock_body</strong> 中都含有一次步长为2的卷积，一共执行了5次，所以一共降维了 <script type="math/tex">2^5=32</script> 倍，因此最后的特征图大小就是 416 / 32 = 13</p>
+<p>最后输出的网络中的 num_filter = 1024，输出结构是（sample_num, 13, 13, 1024） </p>
+<h3 id="yolo框架"><a href="#yolo框架" class="headerlink" title="yolo框架"></a>yolo框架</h3><p><strong>make_last_layers(x, num_filters, out_filters)</strong></p>
+<p>在 <strong>yolo_body</strong> 中使用到了这个函数，主要用来进行输出的降维操作，共执行2步操作：</p>
+<ul>
+<li>对 x 进行多次卷积操作，先将num_filters扩大一倍，再恢复原来的大小，最终输出的num_filters的到校仍是参数中的num_filters的大小</li>
+<li>对 y 先进行 3 x 3 的卷积，再执行不含BatchNormalization和LeakyReLU的 <strong>1 x 1</strong> 卷积, 将输出的 num_filters 的大小降维out_filters</li>
+</ul>
+<h4 id="补充-1-x-1-卷积"><a href="#补充-1-x-1-卷积" class="headerlink" title="补充 1 x 1 卷积"></a>补充 1 x 1 卷积</h4><ul>
+<li>1x1的卷积层可以灵活控制网络的depth也就是深度或者厚度，是对相同channel上的信息上的线性组合，从而达到降维\升维的目的，同时卷积之后特征图的大小没有变即在保持平面信息不变的情况下调整维度，所以 1 x 1 的卷积主要是针对网络的depth</li>
+<li>1x1的卷积层在inception结构中还有降低计算量的作用<ul>
+<li>先了解多核卷积的实例计算：<a href="https://www.cnblogs.com/ranjiewen/articles/7467600.html（注意看黑体加粗的重点部分），学会如何计算多核卷几下的神经元个数" target="_blank" rel="noopener">https://www.cnblogs.com/ranjiewen/articles/7467600.html（注意看黑体加粗的重点部分），学会如何计算多核卷几下的神经元个数</a></li>
+<li>在此基础之上就可以理解下面这幅图了：</li>
+<li><img src="https://danielblog.oss-cn-beijing.aliyuncs.com/yolov3/inception.jpg" alt=""></li>
+<li>左边是传统的inception模块，右边是加入1x1 卷积的inception。这层的输入的特征维数是（28x28x192）,卷积核大小以及卷积通道数(包括三种卷积核，分别是1x1x64,3x3x128,5x5x32)，右图中在3x3，5x5 convolution前新加入的1x1的卷积核为 96 和 16 通道的，在max pooling后加入的1x1卷积为 32 通道。</li>
+<li>那么图(a)的参数为（1x1x192x64）+(3x3x192x128)+(5x5x192x32) </li>
+<li>图(b)的参数为(1x1x192x64)+(1x1x192x96)+(1x1x192x16)+(3x3x96x128)+(5x5x16x32)+(1x1x192x32).<br>比较可知，模型参数减少了。 </li>
+<li>参考：<a href="https://blog.csdn.net/a1154761720/article/details/53411365" target="_blank" rel="noopener">https://blog.csdn.net/a1154761720/article/details/53411365</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>yolo_body(inputs, num_anchors, num_classes)</strong></p>
+<p>参数：</p>
+<ul>
+<li>inputs： 输入张量</li>
+<li>num_anchors: 锚的数量</li>
+<li>num_classes: 类别的数量</li>
+</ul>
+<p>输出： 一个以输入张量为输入，三个张量组合[y1,y2,y3]为输出的模型</p>
+<h4 id="13-x-13-特征图"><a href="#13-x-13-特征图" class="headerlink" title="13 x 13 特征图"></a>13 x 13 特征图</h4><p>先使用了darknet框架生成基本模型，将输出传给 <strong>make_last_layers</strong> ，将 x 的 num_filters 变为 512</p>
+<p>输出的 x 的大小是 (sample_num, 13, 13, 512)</p>
+<p>输出的 y1 的大小是(sample_num, 13, 13, num_anchors*(5 + num_classes))</p>
+<h4 id="26-x-26-特征图"><a href="#26-x-26-特征图" class="headerlink" title="26 x 26 特征图"></a>26 x 26 特征图</h4><p>接着将输出为(sample_num, 13, 13, 512) 的 x 进行上采样2倍(UpSampling2D(2))，并且num_filters 变为256，x 的大小变为 (sample_num, 26, 26, 256)</p>
+<p>然后和 darknet 的第152层网络(sample_num, 26, 26, 512)进行连接,<br>生成大小为 (sample_num, 13, 13, 768)</p>
+<p>最后使用 <strong>make_last_layers</strong> 将 num_filters 改为256，并输出y2</p>
+<p>输出的 x 的大小是 (sample_num, 26, 26, 256)</p>
+<p>输出的 y2 的大小是(sample_num, 26, 26, num_anchors*(5 + num_classes))</p>
+<h4 id="52-x-52-特征图"><a href="#52-x-52-特征图" class="headerlink" title="52 x 52 特征图"></a>52 x 52 特征图</h4><p>同样将输出为(sample_num, 26, 26, 256) 的 x 进行2倍的上采样，num_filters 变为 128， x 的大小变为(sample_num, 52, 52, 128)</p>
+<p>然后和 darknet 的第92层网络(sample_num, 52, 52, 256)进行连接,<br>生成大小为 (sample_num, 13, 13, 384)</p>
+<p>使用 <strong>make_last_layers</strong> 将 num_filters 改为128，并输出y3</p>
+<p>输出的 x 的大小是 (sample_num, 52, 52, 128)</p>
+<p>输出的 y3 的大小是(sample_num, 52, 52, num_anchors*(5 + num_classes))</p>
+<p><strong>最终，yolo框架输出的是三个大小不同的特征图</strong></p>
+<p>y1: (sample_num, 26, 26, num_anchors<em>(5 + num_classes))<br>y2: (sample_num, 26, 26, num_anchors</em>(5 + num_classes))<br>y3: (sample_num, 52, 52, num_anchors*(5 + num_classes))  </p>
+<p>源码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""Create YOLO_V3 model CNN body in Keras."""</span></span><br><span class="line">    darknet = Model(inputs, darknet_body(inputs))</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 13 x 13 特征图</span></span><br><span class="line">x, y1 = make_last_layers(darknet.output, <span class="number">512</span>, num_anchors*(num_classes+<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 26 x 26 特征图</span></span><br><span class="line">    x = compose(</span><br><span class="line">            DarknetConv2D_BN_Leaky(<span class="number">256</span>, (<span class="number">1</span>,<span class="number">1</span>)),</span><br><span class="line">            UpSampling2D(<span class="number">2</span>))(x)</span><br><span class="line">    x = Concatenate()([x,darknet.layers[<span class="number">152</span>].output])</span><br><span class="line">    x, y2 = make_last_layers(x, <span class="number">256</span>, num_anchors*(num_classes+<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 52 x 52 特征图</span></span><br><span class="line">    x = compose(</span><br><span class="line">            DarknetConv2D_BN_Leaky(<span class="number">128</span>, (<span class="number">1</span>,<span class="number">1</span>)),</span><br><span class="line">            UpSampling2D(<span class="number">2</span>))(x)</span><br><span class="line">    x = Concatenate()([x,darknet.layers[<span class="number">92</span>].output])</span><br><span class="line">    x, y3 = make_last_layers(x, <span class="number">128</span>, num_anchors*(num_classes+<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Model(inputs, [y1,y2,y3])</span><br></pre></td></tr></table></figure></p>
+<h3 id="yolo-boxes-and-scores"><a href="#yolo-boxes-and-scores" class="headerlink" title="yolo_boxes_and_scores()"></a>yolo_boxes_and_scores()</h3><p>提取框_boxes和置信度_box_scores</p>
+<h3 id="yolo-eval"><a href="#yolo-eval" class="headerlink" title="yolo_eval()"></a>yolo_eval()</h3><p>anchor_mask : anchor的掩码，由于anchor文件中是按从小到大排列的，而model.output输出的层是 13-&gt;52 ，而越小的特征图检测的是越大的物体，也就需要越大的anchor，所以anchor_mask 是倒叙排列</p>
+<p>使用yolo_boxes_and_scores获得提取框_boxes和置信度_box_scores</p>
+<p>然后使用非极大抑制算法筛选标注框</p>
+<p>再使用 K.gather 通过nms_index筛选合格的框和框对应得分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">boxes_ = K.concatenate(boxes_, axis=<span class="number">0</span>)</span><br><span class="line">scores_ = K.concatenate(scores_, axis=<span class="number">0</span>)</span><br><span class="line">classes_ = K.concatenate(classes_, axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>// tf.gather 使用实例： <a href="https://blog.csdn.net/guotong1988/article/details/53172882" target="_blank" rel="noopener">https://blog.csdn.net/guotong1988/article/details/53172882</a></p>
+<p>使用 K.ones_like x c 生成类别信息， 例：[1,1,1] x 4 = [4,4,4] 代表3个类别为4的框</p>
+<p>最后使用 K.concatenate 合并所有的框，合并所有的得分，合并所有的的类别信息</p>
+<h3 id="补充涉及的小细节"><a href="#补充涉及的小细节" class="headerlink" title="补充涉及的小细节"></a>补充涉及的小细节</h3><p>1.<strong>非极大抑制算法</strong></p>
+<p>在 <strong>yolo_eval()</strong> 中用到了 <strong>非极大抑制算法</strong></p>
+<p><strong>非极大抑制算法（NMS）</strong>：用来剔除重合度高于阈值的框，有时候可能会有多个框检测的是同一个物体</p>
+<p>首先从所有的检测框中找到置信度较大的那个框，然后挨个计算其与剩余框的IOU，如果其值大于一定阈值（重合度过高），那么就将该框剔除；然后对剩余的检测框重复上述过程，直到处理完所有的检测框</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用方法</span></span><br><span class="line">tf.image.non_max_suppression(</span><br><span class="line">    boxes, <span class="comment"># A 2-D float Tensor of shape [num_boxes, 4]</span></span><br><span class="line">    scores, <span class="comment"># A 1-D float Tensor of shape [num_boxes], 代表每个框的得分</span></span><br><span class="line">    max_output_size, <span class="comment"># 最大被选择的框的数目</span></span><br><span class="line">    iou_threshold=<span class="number">0.5</span>, <span class="comment"># 检测的IOU阈值</span></span><br><span class="line">    name=<span class="keyword">None</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>2.<strong>concatenate</strong></p>
+<p>concatenate 的使用：concatenate将相同维度的数据元素连接到一起<br>例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line">sess = K.get_session()</span><br><span class="line"></span><br><span class="line">a = K.constant([[<span class="number">2</span>, <span class="number">4</span>], [<span class="number">1</span>, <span class="number">2</span>]])</span><br><span class="line">b = K.constant([[<span class="number">3</span>, <span class="number">2</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">c = [a, b]</span><br><span class="line">c = K.concatenate(c, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">print(sess.run(c))</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">[[2. 4.] [1. 2.] [3. 2.] [5. 6.]]</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>等待更新….</p>
+
+      
+    </div>
+    
+    
+    
+
+	<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/2018/08/25/yolov3Keras实现解读/">yolov3 Keras实现解读</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
+  <p><span>发布时间:</span>2018年08月25日 - 20:08</p>
+  <p><span>最后更新:</span>2018年09月12日 - 19:09</p>
+  <p><span>原始链接:</span><a href="/2018/08/25/yolov3Keras实现解读/" title="yolov3 Keras实现解读">https://danielack.github.io/2018/08/25/yolov3Keras实现解读/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/08/25/yolov3Keras实现解读/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+      
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Daniel_柏桦 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Daniel_柏桦 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+          
+            <a href="/tags/目标检测/" rel="tag"><i class="fa fa-tag"></i> 目标检测</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/22/机器学习笔记/" rel="next" title="机器学习笔记">
+                <i class="fa fa-chevron-left"></i> 机器学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/head.jpg"
+                alt="Daniel_柏桦" />
+            
+              <p class="site-author-name" itemprop="name">Daniel_柏桦</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/danielAck" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="danieljr@126.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/3946613575" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目结构"><span class="nav-number"></span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number"></span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单开始"><span class="nav-number"></span> <span class="nav-text">简单开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载权重文件"><span class="nav-number">1.</span> <span class="nav-text">下载权重文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进行图片检测"><span class="nav-number">2.</span> <span class="nav-text">进行图片检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用摄像头进行视频检测"><span class="nav-number">3.</span> <span class="nav-text">利用摄像头进行视频检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解读"><span class="nav-number">4.</span> <span class="nav-text">源码解读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#yolo-video-py"><span class="nav-number">4.1.</span> <span class="nav-text">yolo_video.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yolo-py"><span class="nav-number">4.2.</span> <span class="nav-text">yolo.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用自己的训练集"><span class="nav-number"></span> <span class="nav-text">使用自己的训练集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#train-py-解读"><span class="nav-number">1.</span> <span class="nav-text">train.py 解读</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心算法实现"><span class="nav-number"></span> <span class="nav-text">核心算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#model-py-解读"><span class="nav-number"></span> <span class="nav-text">model.py 解读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#底层框架"><span class="nav-number">1.</span> <span class="nav-text">底层框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#darknet框架"><span class="nav-number">2.</span> <span class="nav-text">darknet框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yolo框架"><span class="nav-number">3.</span> <span class="nav-text">yolo框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#补充-1-x-1-卷积"><span class="nav-number">3.1.</span> <span class="nav-text">补充 1 x 1 卷积</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-x-13-特征图"><span class="nav-number">3.2.</span> <span class="nav-text">13 x 13 特征图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#26-x-26-特征图"><span class="nav-number">3.3.</span> <span class="nav-text">26 x 26 特征图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#52-x-52-特征图"><span class="nav-number">3.4.</span> <span class="nav-text">52 x 52 特征图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yolo-boxes-and-scores"><span class="nav-number">4.</span> <span class="nav-text">yolo_boxes_and_scores()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yolo-eval"><span class="nav-number">5.</span> <span class="nav-text">yolo_eval()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补充涉及的小细节"><span class="nav-number">6.</span> <span class="nav-text">补充涉及的小细节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数"><span class="nav-number"></span> <span class="nav-text">损失函数</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel_柏桦</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: '1535201563000', 
+            owner: 'danielAck',
+            repo: 'danielAck.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'cfb3be5fb1304cb6074d91f1371b5e77668d68ba',
+            
+                client_id: 'beb9662dd9e1835fe45b'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("GPlqVvbroSWT8qwXkqcF6mhN-gzGzoHsz", "lzTdjGEJmEHVdPpoAgmAkg5t");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+
+</body>
+</html>

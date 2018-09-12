@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>https://danielack.github.io/2018/08/25/yolov3Keras%E5%AE%9E%E7%8E%B0%E8%A7%A3%E8%AF%BB/</loc>
+    <lastmod>2018-09-12T11:23:42.776Z</lastmod>
+    <data>
+        <display>
+        <title>yolov3 Keras实现解读</title>
+        <pubTime>2018-08-25T12:52:43.000Z</pubTime>
+        
+        <tag>深度学习</tag>
+         
+        <tag>目标检测</tag>
+         
+         
+           
+             
+              <breadCrumb title="深度学习" url="https://danielack.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://danielack.github.io/2018/05/22/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2018-08-13T05:13:25.281Z</lastmod>
+    <lastmod>2018-08-13T07:08:55.929Z</lastmod>
     <data>
         <display>
         <title>机器学习笔记</title>

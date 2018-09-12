@@ -141,7 +141,7 @@
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/gdbt_multiclassification.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/xgboost_gain.png">
 <meta property="og:image" content="https://danielblog.oss-cn-beijing.aliyuncs.com/ML_Note/xgboost_local_global.png">
-<meta property="og:updated_time" content="2018-08-13T05:13:25.281Z">
+<meta property="og:updated_time" content="2018-08-13T07:08:55.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习笔记">
 <meta name="twitter:description" content="以西瓜书为主线，以其他书籍作为参考进行补充，例如《统计学习方法》，《PRML》等">
@@ -833,18 +833,18 @@
 <h3 id="4-4-CART-的生成"><a href="#4-4-CART-的生成" class="headerlink" title="4.4 CART 的生成"></a>4.4 CART 的生成</h3><h4 id="CART回归树的生成"><a href="#CART回归树的生成" class="headerlink" title="CART回归树的生成"></a>CART回归树的生成</h4><p><span id="cart_regression"></span></p>
 <p><strong>回归树</strong> 可以被看作是一个 <strong>函数</strong>, 将输入的特征最终映射为一个 <strong>分数(实值)</strong></p>
 <p>对于回归问题，CART 采用与决策树相同的思想，还是 <strong>对输入空间进行划分</strong>，每一个划分$R_m$对应一个固定的输出值$c_i$，生成的回归模型表示为：</p>
-<script type="math/tex; mode=display">f(x)=\sum_{m=1}^Mc_mI(x\in{R_m})</script><p>固定的输出值 $c_i$ 为划分空间$R_m$中$y_i$的均值</p>
+<script type="math/tex; mode=display">f(x)=\sum_{m=1}^Mc_mI_{x\in{R_m}}(x)</script><p>固定的输出值 $c_i$ 为划分空间$R_m$中$y_i$的均值</p>
 <p><strong>CART回归树的损失函数</strong></p>
 <p>CART回归树采用 <strong>平方误差</strong> $\sum_{x_i\in{R_m}}(y_i-f(x_i))^2$</p>
 <p><strong>CART回归树的划分</strong></p>
 <p>依次对划分空间$R_m$中的每一个样本进行如下的操作：</p>
 <ul>
 <li>依次将当前样本的每一个 特征/属性 值，作为一个切分点$s$，而当前变量就是切分变量$j$</li>
-<li>使用当前切分变量的切分点将当前划分空间$R_m$划分为两个子区域 $R_1=\lbrace{x}|\lbrace{x^{(j)}} \req {s}\rbrace\rbrace$, $R_2=\lbrace{x}|\lbracex^{(j)} &gt; s\rbrace\rbrace$</li>
+<li>使用当前切分变量的切分点将当前划分空间$R_m$划分为两个子区域 $R_1=\lbrace{x}|\lbrace{x^{(j)}} &lt; s\rbrace\rbrace$, $R_2=\lbrace{x}|\lbrace{x^{(j)}} &gt; s\rbrace\rbrace$</li>
 <li>然后计算 $R_1$ 和 $R_2$ 的固定输出值 $c_{1i}$, $c_{2i}$</li>
 <li>计算$c_{1i}$, $c_{2i}$ 下的平方误差和 $r_{js} = r_{js1} + r_{js2}$</li>
 </ul>
-<p>比较所有的r_{js}, 找到 <strong>最小的</strong> r_{js}下的最优切分变量 $j$，最优切分点 $s$</p>
+<p>比较所有的$r_{js}$, 找到 <strong>最小的</strong> $r_{js}$下的最优切分变量 $j$，最优切分点 $s$</p>
 <p>再对划分好的两个子区域进行上述划分，直到满足停止条件</p>
 <h4 id="CART分类树的生成"><a href="#CART分类树的生成" class="headerlink" title="CART分类树的生成"></a>CART分类树的生成</h4><p>CART分类树使用 <strong>基尼系数</strong> 为划分依据，剩下的生成方式与决策树的生成方式一样</p>
 <p>算法停止的条件可以是：</p>
@@ -1238,7 +1238,9 @@ l_\epsilon(z) =
 </ul>
 <h4 id="提升树"><a href="#提升树" class="headerlink" title="提升树"></a>提升树</h4><p>提升树是迭代 <strong>多棵回归树</strong> 来共同决策,注意是有多颗回归树，只不过是串行生成的而已，而随机森林是可以并行生成的</p>
 <p>以 <strong>分类树</strong> 或 <strong>回归树</strong> 为 <strong>基分类器</strong> 的提升方法</p>
-<p>对分类问题，采用 <strong>二叉分类树</strong>，对回归问题， 采用 <strong>二叉回归树</strong></p>
+<ul>
+<li>对分类问题，采用 <strong>二叉分类树</strong>，对回归问题， 采用 <strong>二叉回归树</strong></li>
+</ul>
 <p>采用 <strong>加法模型</strong> + <strong>前向分布算法</strong> + <strong>决策树为基函数</strong> 且基函数为决策树桩（最简单的决策树）</p>
 <p>之所以采用二叉树，是因为二叉树是所谓的 <strong>决策树桩</strong>, 足够简单，同时也能避免 <strong>过拟合</strong></p>
 <p><strong>提升树算法</strong></p>
@@ -1578,7 +1580,7 @@ l_\epsilon(z) =
   <p><span>本文标题:</span><a href="/2018/05/22/机器学习笔记/">机器学习笔记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Daniel_柏桦 的个人博客">Daniel_柏桦</a></p>
   <p><span>发布时间:</span>2018年05月22日 - 20:05</p>
-  <p><span>最后更新:</span>2018年08月13日 - 13:08</p>
+  <p><span>最后更新:</span>2018年08月13日 - 15:08</p>
   <p><span>原始链接:</span><a href="/2018/05/22/机器学习笔记/" title="机器学习笔记">https://danielack.github.io/2018/05/22/机器学习笔记/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://danielack.github.io/2018/05/22/机器学习笔记/"  aria-label="复制成功！"></i></span>
   </p>
@@ -1662,6 +1664,10 @@ l_\epsilon(z) =
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/25/yolov3Keras实现解读/" rel="prev" title="yolov3 Keras实现解读">
+                yolov3 Keras实现解读 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -1749,7 +1755,7 @@ l_\epsilon(z) =
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1760,7 +1766,7 @@ l_\epsilon(z) =
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1771,7 +1777,7 @@ l_\epsilon(z) =
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
